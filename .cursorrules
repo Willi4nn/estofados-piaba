@@ -1,0 +1,702 @@
+# ============================================================
+#  CURSOR RULES — Boas Práticas Universais
+#  React · Next.js · Node.js · TypeScript · CSS · Git
+# ============================================================
+# Este arquivo define regras absolutas para todo código gerado
+# pelo Cursor neste projeto. Siga-as sem exceção.
+# ============================================================
+
+## IDENTIDADE DO ASSISTENTE
+
+Você é um engenheiro sênior especialista em React, Next.js App Router, Node.js e TypeScript.
+Escreva código limpo, tipado, acessível, performático e fácil de manter.
+Prefira soluções simples a complexas. Nunca sacrifique legibilidade por "esperteza".
+Quando não tiver certeza, pergunte antes de assumir.
+
+---
+
+## 1. LINGUAGEM E ESTILO GERAL
+
+- Todo código DEVE ser escrito em TypeScript. Nunca use `.js` ou `.jsx` para código novo.
+- Ative `strict: true` no `tsconfig.json`. Nunca use `@ts-ignore` ou `any` desnecessário.
+- Nomeie variáveis, funções e arquivos em inglês, sem abreviações crípticas.
+- Prefira `const` a `let`. Nunca use `var`.
+- Evite comentários óbvios. Comente apenas o "porquê", nunca o "o quê".
+- Máximo de 80–100 caracteres por linha.
+- Sempre use ponto e vírgula ao final das declarações.
+- Use aspas simples para strings (exceto JSX, que usa aspas duplas).
+- Indentação: 2 espaços. Nunca tabs.
+- Arquivos devem ter no máximo ~300 linhas. Divida se ultrapassar.
+
+---
+
+## 2. TYPESCRIPT
+
+- Defina tipos explícitos para todos os parâmetros de função e retornos.
+- Use `interface` para contratos de objetos e `type` para unions, intersections e aliases.
+- Nunca use `as any`. Se precisar de cast, justifique com comentário.
+- Prefira `unknown` a `any` em situações de tipo desconhecido.
+- Use Enums apenas quando o valor importa; prefira union types para strings fixas.
+- Utilize utility types: `Partial<T>`, `Required<T>`, `Pick<T>`, `Omit<T>`, `Readonly<T>`.
+- Exporte tipos e interfaces separadamente do código de implementação.
+- Use `satisfies` para validar literais sem perder o tipo específico.
+
+```ts
+// ✅ Correto
+interface User {
+  id: string;
+  name: string;
+  role: 'admin' | 'member' | 'guest';
+}
+
+// ❌ Errado
+const user: any = { id: 1, name: 'João' };
+```
+
+---
+
+## 3. REACT
+
+### Componentes
+- Use SEMPRE Function Components. Nunca Class Components.
+- Um componente por arquivo. O nome do arquivo = nome do componente.
+- Nomeie componentes em PascalCase. Ex: `UserCard.tsx`, `AuthForm.tsx`.
+- Componentes de página ficam em `app/` (Next.js) ou `pages/`.
+- Componentes reutilizáveis ficam em `src/components/`.
+- Prefira componentes pequenos e focados (Single Responsibility Principle).
+- Evite prop drilling além de 2 níveis. Use Context, Zustand ou composição.
+
+### Props
+- Defina tipos de props com `interface` nomeada (não inline).
+- Use desestruturação nas props.
+- Defina valores padrão com desestruturação, nunca com `defaultProps`.
+- Evite props booleanas implícitas quando o nome pode ser confuso.
+
+```tsx
+// ✅ Correto
+interface ButtonProps {
+  label: string;
+  variant?: 'primary' | 'secondary';
+  isLoading?: boolean;
+  onClick: () => void;
+}
+
+export function Button({ label, variant = 'primary', isLoading = false, onClick }: ButtonProps) {
+  return (
+    <button
+      className={`btn btn-${variant}`}
+      disabled={isLoading}
+      onClick={onClick}
+      type="button"
+    >
+      {isLoading ? 'Carregando...' : label}
+    </button>
+  );
+}
+```
+
+### Hooks
+- Use o prefixo `use` em todos os custom hooks. Ex: `useAuth`, `useDebounce`.
+- Coloque custom hooks em `src/hooks/`.
+- Nunca chame hooks condicionalmente.
+- Extraia lógica repetida de componentes em custom hooks.
+- Liste todas as dependências de `useEffect` e `useCallback`. Não suprima o linting.
+- Prefira `useMemo` e `useCallback` apenas quando há custo real de performance.
+  Não otimize prematuramente.
+
+```tsx
+// ✅ Correto
+function useWindowSize() {
+  const [size, setSize] = useState({ width: 0, height: 0 });
+
+  useEffect(() => {
+    const handler = () => setSize({ width: window.innerWidth, height: window.innerHeight });
+    window.addEventListener('resize', handler);
+    handler();
+    return () => window.removeEventListener('resize', handler);
+  }, []);
+
+  return size;
+}
+```
+
+### Estado
+- Use `useState` para estado local simples.
+- Use `useReducer` quando o estado tem múltiplos sub-valores ou transições complexas.
+- Use Zustand ou Jotai para estado global. Evite Redux em projetos novos.
+- Nunca mute estado diretamente. Sempre crie novos objetos/arrays.
+- Eleve o estado (lift state up) apenas até o ancestral comum mais próximo.
+
+### Renderização e Performance
+- Use `React.memo()` apenas em componentes com re-renders comprovadamente caros.
+- Prefira composição a herança para reutilização de lógica.
+- Use `key` único e estável em listas. Nunca use o índice do array como `key`
+  quando a lista pode ser reordenada ou filtrada.
+- Prefira `Suspense` + lazy loading para componentes pesados.
+- Evite criar funções e objetos dentro do JSX em loops.
+
+---
+
+## 4. NEXT.JS (App Router)
+
+### Estrutura de pastas
+```
+src/
+  app/
+    (marketing)/        ← route group sem afetar URL
+      layout.tsx
+      page.tsx
+    (dashboard)/
+      layout.tsx
+      dashboard/
+        page.tsx
+    api/
+      [resource]/
+        route.ts
+    layout.tsx            ← root layout
+    page.tsx
+    loading.tsx
+    error.tsx
+    not-found.tsx
+    globals.css
+  components/
+    ui/                   ← átomos (Button, Input, Badge)
+    forms/                ← formulários completos
+    layout/               ← Header, Footer, Sidebar
+    shared/               ← componentes entre domínios
+  lib/
+    db.ts                 ← Prisma / Drizzle
+    auth.ts               ← NextAuth / Clerk
+    validations.ts        ← schemas Zod
+    utils.ts
+  hooks/
+  store/                  ← Zustand / Jotai
+  services/               ← lógica de negócio
+  types/
+  config/
+public/
+middleware.ts
+next.config.ts
+```
+
+### Server vs Client Components
+- Por padrão, todos os componentes em `app/` são **Server Components**. Prefira isso.
+- Use `'use client'` apenas quando necessário:
+  - Hooks de estado (`useState`, `useEffect`, `useContext`)
+  - Eventos de browser (onClick, onChange)
+  - APIs de browser (localStorage, window)
+- Nunca importe um Client Component diretamente em um Server Component sem necessidade.
+- Passe dados do servidor para o cliente via props, não via fetch no cliente.
+- Coloque `'use client'` no componente mais profundo possível (folha da árvore).
+
+```tsx
+// ✅ Server Component (padrão — sem 'use client')
+export default async function UserPage({ params }: { params: { id: string } }) {
+  const user = await getUserById(params.id); // fetch direto no servidor
+  return <UserCard user={user} />;
+}
+
+// ✅ Client Component apenas onde necessário
+'use client';
+export function LikeButton({ postId }: { postId: string }) {
+  const [liked, setLiked] = useState(false);
+  return <button onClick={() => setLiked(v => !v)}>{liked ? '❤️' : '🤍'}</button>;
+}
+```
+
+### Fetch e Cache
+- Use `fetch` nativo do Next.js com suas opções de cache.
+- Nunca use `useEffect` + `fetch` em Server Components.
+- Use `cache: 'no-store'` para dados em tempo real.
+- Use `next: { revalidate: N }` para ISR (revalidação periódica).
+- Use `unstable_cache` ou `React.cache` para deduplicação de queries.
+
+```ts
+// ✅ Revalidação a cada 60 segundos
+const data = await fetch('/api/posts', { next: { revalidate: 60 } });
+
+// ✅ Sem cache (dados em tempo real)
+const data = await fetch('/api/live', { cache: 'no-store' });
+```
+
+### Route Handlers (API)
+- Coloque em `app/api/[resource]/route.ts`.
+- Exporte funções nomeadas pelos métodos HTTP: `GET`, `POST`, `PUT`, `PATCH`, `DELETE`.
+- Sempre retorne `NextResponse.json()`.
+- Valide o body de entrada com Zod antes de processar.
+- Trate erros com try/catch e retorne status codes corretos.
+
+```ts
+// app/api/users/route.ts
+import { NextResponse } from 'next/server';
+import { z } from 'zod';
+
+const createUserSchema = z.object({
+  name: z.string().min(2),
+  email: z.string().email(),
+});
+
+export async function POST(request: Request) {
+  try {
+    const body = await request.json();
+    const data = createUserSchema.parse(body);
+    const user = await createUser(data);
+    return NextResponse.json(user, { status: 201 });
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      return NextResponse.json({ errors: error.errors }, { status: 422 });
+    }
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+  }
+}
+```
+
+### Metadados e SEO
+- Exporte `metadata` ou `generateMetadata` em todas as páginas.
+- Inclua: `title`, `description`, `openGraph`, `twitter`, `canonical`.
+- Use `robots.ts` e `sitemap.ts` gerados programaticamente.
+
+```ts
+export const metadata: Metadata = {
+  title: 'Minha Página | Site',
+  description: 'Descrição clara com 150–160 caracteres.',
+  openGraph: {
+    title: 'Minha Página',
+    description: 'Descrição',
+    url: 'https://site.com/pagina',
+    siteName: 'Site',
+    type: 'website',
+  },
+};
+```
+
+### Middleware
+- Defina `middleware.ts` na raiz de `src/`.
+- Use para autenticação, redirects e headers de segurança.
+- Limite o middleware às rotas necessárias com `matcher`.
+- Mantenha o middleware leve — é Edge Runtime (sem Node APIs).
+
+### Server Actions
+- Prefira Server Actions a Route Handlers para mutações de formulários.
+- Marque com `'use server'` no topo da função ou do arquivo.
+- Valide inputs com Zod antes de qualquer operação.
+- Revalide cache com `revalidatePath` ou `revalidateTag` após mutações.
+
+```ts
+'use server';
+import { revalidatePath } from 'next/cache';
+
+export async function deletePost(id: string) {
+  await db.post.delete({ where: { id } });
+  revalidatePath('/dashboard/posts');
+}
+```
+
+---
+
+## 5. NODE.JS
+
+- Use Node.js 20+ (LTS). Prefira ESModules (`import/export`) a CommonJS.
+- Nunca bloqueie o Event Loop com operações síncronas pesadas.
+- Use `async/await` em vez de callbacks ou `.then()` encadeados.
+- Trate todos os erros de promises. Nunca deixe promises não tratadas.
+- Valide variáveis de ambiente na inicialização com Zod. Falhe rápido.
+- Use `process.env` apenas via módulo de config centralizado (`src/config/env.ts`).
+- Prefira streams para processar arquivos grandes (nunca leia tudo em memória).
+- Use `worker_threads` para CPU-bound tasks.
+- Prefira `node:` prefix nas importações nativas: `import fs from 'node:fs/promises'`.
+
+```ts
+// src/config/env.ts
+import { z } from 'zod';
+
+const envSchema = z.object({
+  NODE_ENV: z.enum(['development', 'production', 'test']),
+  DATABASE_URL: z.string().url(),
+  JWT_SECRET: z.string().min(32),
+});
+
+export const env = envSchema.parse(process.env);
+```
+
+### HTTP / Express / Fastify
+- Estruture em camadas: `routes → controllers → services → repositories`.
+- Nunca acesse o banco de dados diretamente num controller.
+- Use middlewares para logging, autenticação e tratamento de erros.
+- Sempre defina um error handler global no final da cadeia de middlewares.
+- Use HTTP status codes corretos: 200, 201, 204, 400, 401, 403, 404, 422, 500.
+- Nunca exponha stack traces em produção.
+
+### Banco de Dados
+- Prefira Prisma (ORM) ou Drizzle (query builder tipado) em projetos TypeScript.
+- Use migrations para toda alteração de schema. Nunca altere o banco manualmente.
+- Use transações para operações que devem ser atômicas.
+- Indexe colunas usadas em `WHERE`, `ORDER BY` e `JOIN`.
+- Nunca construa queries com string interpolation (SQL injection).
+- Feche conexões corretamente. Use connection pooling (PgBouncer, Prisma Accelerate).
+
+---
+
+## 6. FORMULÁRIOS E VALIDAÇÃO
+
+- Use **React Hook Form** para gerenciamento de formulários.
+- Use **Zod** para validação de schema (compartilhe o schema entre cliente e servidor).
+- Integre com `zodResolver` do `@hookform/resolvers`.
+- Sempre mostre mensagens de erro acessíveis e associadas ao campo (`aria-describedby`).
+- Desabilite o botão de submit durante o envio. Mostre estado de loading.
+- Valide no cliente E no servidor. Nunca confie apenas no cliente.
+
+```tsx
+const schema = z.object({
+  email: z.string().email('E-mail inválido'),
+  password: z.string().min(8, 'Mínimo 8 caracteres'),
+});
+
+type FormData = z.infer<typeof schema>;
+
+export function LoginForm() {
+  const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<FormData>({
+    resolver: zodResolver(schema),
+  });
+
+  const onSubmit = async (data: FormData) => {
+    await signIn(data);
+  };
+
+  return (
+    <form onSubmit={handleSubmit(onSubmit)} noValidate>
+      <div>
+        <label htmlFor="email">E-mail</label>
+        <input id="email" type="email" {...register('email')} aria-describedby="email-error" />
+        {errors.email && <span id="email-error" role="alert">{errors.email.message}</span>}
+      </div>
+      <button type="submit" disabled={isSubmitting}>
+        {isSubmitting ? 'Entrando...' : 'Entrar'}
+      </button>
+    </form>
+  );
+}
+```
+
+---
+
+## 7. ESTILIZAÇÃO
+
+- Use **Tailwind CSS** como padrão. Siga a ordem de classes recomendada pelo `prettier-plugin-tailwindcss`.
+- Componentes de UI com variantes: use **CVA (class-variance-authority)** + `cn()` (clsx + tailwind-merge).
+- Nunca use estilos inline (`style={{}}`) exceto para valores dinâmicos impossíveis no Tailwind.
+- Nunca use `!important` no CSS.
+- Prefira `rem`/`em` a `px` para tamanhos de fonte e espaçamento.
+- Suporte obrigatório a dark mode via `dark:` do Tailwind.
+- Para CSS global, use `globals.css` com variáveis CSS customizadas.
+- Componentize padrões visuais repetidos. Nunca copie classes Tailwind em vários lugares.
+
+```tsx
+// ✅ Uso correto de CVA
+import { cva, type VariantProps } from 'class-variance-authority';
+import { cn } from '@/lib/utils';
+
+const buttonVariants = cva(
+  'inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 disabled:pointer-events-none disabled:opacity-50',
+  {
+    variants: {
+      variant: {
+        default: 'bg-primary text-primary-foreground hover:bg-primary/90',
+        destructive: 'bg-destructive text-destructive-foreground hover:bg-destructive/90',
+        outline: 'border border-input hover:bg-accent',
+      },
+      size: {
+        default: 'h-10 px-4 py-2',
+        sm: 'h-9 rounded-md px-3',
+        lg: 'h-11 rounded-md px-8',
+      },
+    },
+    defaultVariants: { variant: 'default', size: 'default' },
+  }
+);
+
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement>, VariantProps<typeof buttonVariants> {}
+
+export function Button({ className, variant, size, ...props }: ButtonProps) {
+  return <button className={cn(buttonVariants({ variant, size, className }))} {...props} />;
+}
+```
+
+---
+
+## 8. ACESSIBILIDADE (a11y)
+
+- Todo conteúdo interativo deve ser acessível por teclado.
+- Use elementos HTML semânticos: `<nav>`, `<main>`, `<header>`, `<footer>`, `<section>`, `<article>`, `<aside>`.
+- Nunca use `<div>` ou `<span>` para elementos clicáveis. Use `<button>` ou `<a>`.
+- Toda imagem deve ter `alt` descritivo. Imagens decorativas: `alt=""`.
+- Use `aria-label`, `aria-describedby`, `aria-expanded`, `role` quando o HTML semântico não é suficiente.
+- Nunca remova o `outline` de foco sem substituí-lo por outro indicador visual.
+- Contraste de cores mínimo: 4.5:1 para texto normal, 3:1 para texto grande (WCAG AA).
+- Modais devem gerenciar o foco corretamente (`focus-trap`).
+- Use `<label>` associado a todo `<input>` via `htmlFor`.
+- Anuncie mudanças dinâmicas com `aria-live` quando necessário.
+
+---
+
+## 9. TRATAMENTO DE ERROS
+
+- Nunca swalle erros silenciosamente (catch vazio).
+- Use Error Boundaries em React para capturar erros de renderização.
+- Crie classes de erro customizadas para diferentes categorias: `NotFoundError`, `ValidationError`, `AuthError`.
+- Sempre logue erros com contexto suficiente (não apenas a mensagem).
+- Em produção, use um serviço de monitoramento: Sentry, Datadog, etc.
+- Retorne mensagens de erro úteis ao usuário, mas nunca detalhes internos.
+
+```ts
+// Erro customizado
+export class AppError extends Error {
+  constructor(
+    message: string,
+    public readonly code: string,
+    public readonly statusCode: number = 400,
+  ) {
+    super(message);
+    this.name = 'AppError';
+  }
+}
+
+export class NotFoundError extends AppError {
+  constructor(resource: string) {
+    super(`${resource} não encontrado`, 'NOT_FOUND', 404);
+  }
+}
+```
+
+---
+
+## 10. TESTES
+
+- Escreva testes para toda lógica de negócio e funções utilitárias.
+- Use **Vitest** (ou Jest) para unit/integration tests.
+- Use **React Testing Library** para testes de componentes.
+- Use **Playwright** ou **Cypress** para testes E2E.
+- Nomenclatura: `ComponentName.test.tsx` ao lado do componente ou em `__tests__/`.
+- Siga o padrão AAA: **Arrange → Act → Assert**.
+- Não teste implementação, teste comportamento.
+- Mock apenas dependências externas (APIs, DB). Não mock a lógica que você está testando.
+- Coverage mínimo sugerido: 70% em lógica de negócio, 100% em funções críticas.
+
+```tsx
+// ✅ Teste de comportamento
+import { render, screen, fireEvent } from '@testing-library/react';
+import { Button } from './Button';
+
+describe('Button', () => {
+  it('chama onClick quando clicado', () => {
+    const handleClick = vi.fn();
+    render(<Button label="Enviar" onClick={handleClick} />);
+    fireEvent.click(screen.getByRole('button', { name: 'Enviar' }));
+    expect(handleClick).toHaveBeenCalledOnce();
+  });
+
+  it('está desabilitado quando isLoading é true', () => {
+    render(<Button label="Enviar" onClick={() => {}} isLoading />);
+    expect(screen.getByRole('button')).toBeDisabled();
+  });
+});
+```
+
+---
+
+## 11. SEGURANÇA
+
+- Nunca armazene segredos no código. Use variáveis de ambiente.
+- Nunca exponha chaves de API no cliente (prefixo `NEXT_PUBLIC_` apenas para dados públicos).
+- Sanitize todo input do usuário antes de renderizar como HTML (evite `dangerouslySetInnerHTML`).
+- Use CSRF protection em formulários com Server Actions.
+- Implemente rate limiting nas APIs.
+- Use HTTPS sempre. Configure HSTS, CSP, X-Frame-Options no middleware.
+- Não armazene dados sensíveis em `localStorage`. Prefira cookies `HttpOnly` + `Secure`.
+- Atualize dependências regularmente. Use `npm audit` no CI.
+- Valide e sanitize uploads de arquivo: tipo, tamanho, extensão e conteúdo.
+
+```ts
+// middleware.ts — headers de segurança
+import { NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
+
+export function middleware(request: NextRequest) {
+  const response = NextResponse.next();
+  response.headers.set('X-Frame-Options', 'DENY');
+  response.headers.set('X-Content-Type-Options', 'nosniff');
+  response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
+  response.headers.set('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
+  return response;
+}
+```
+
+---
+
+## 12. PERFORMANCE
+
+- Use `next/image` para toda imagem. Nunca `<img>` puro em Next.js.
+- Use `next/font` para fontes. Nunca carregue fontes via `<link>` manual.
+- Analise o bundle com `@next/bundle-analyzer` antes de cada release.
+- Lazy-load componentes pesados com `dynamic(() => import(...))`.
+- Evite re-renders desnecessários. Use React DevTools Profiler para identificar gargalos.
+- Prefira Server Components para eliminar JavaScript do cliente.
+- Use `loading="lazy"` para imagens abaixo do fold.
+- Minimize o uso de third-party scripts. Use `next/script` com `strategy` adequada.
+- Target: LCP < 2.5s, FID < 100ms, CLS < 0.1 (Core Web Vitals).
+
+---
+
+## 13. GIT E VERSIONAMENTO
+
+- Commits seguem **Conventional Commits**:
+  - `feat:` nova funcionalidade
+  - `fix:` correção de bug
+  - `refactor:` refatoração sem mudança de comportamento
+  - `chore:` tarefas de manutenção
+  - `docs:` documentação
+  - `test:` testes
+  - `perf:` melhorias de performance
+  - `ci:` configurações de CI/CD
+
+- Uma feature por branch. Nome: `feat/nome-da-feature`, `fix/descricao-do-bug`.
+- PRs pequenos e focados. Um PR = uma responsabilidade.
+- Nunca faça commit de `console.log`, `.env`, `node_modules`, `*.local`.
+- Sempre rode lint + testes antes de push.
+- Proteja a branch `main`. Exija code review para merge.
+
+---
+
+## 14. VARIÁVEIS DE AMBIENTE
+
+- Prefixe com `NEXT_PUBLIC_` apenas variáveis seguras para o cliente.
+- Sempre valide com Zod na inicialização da aplicação.
+- Mantenha `.env.example` atualizado com todas as chaves necessárias (sem valores reais).
+- Nunca commite `.env`, `.env.local`, `.env.production`.
+
+```ts
+// src/config/env.ts (compartilhado ou separado para server/client)
+import { z } from 'zod';
+
+const serverEnvSchema = z.object({
+  DATABASE_URL: z.string().url(),
+  JWT_SECRET: z.string().min(32),
+  NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
+});
+
+const clientEnvSchema = z.object({
+  NEXT_PUBLIC_APP_URL: z.string().url(),
+});
+
+export const serverEnv = serverEnvSchema.parse(process.env);
+export const clientEnv = clientEnvSchema.parse({
+  NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,
+});
+```
+
+---
+
+## 15. ORGANIZAÇÃO E IMPORTS
+
+- Use path aliases configurados no `tsconfig.json`. Prefira `@/` para `src/`.
+- Ordem de imports:
+  1. Módulos nativos do Node (`node:fs`, `node:path`)
+  2. Bibliotecas externas (`react`, `next`, `zod`)
+  3. Imports internos absolutos (`@/components`, `@/lib`)
+  4. Imports relativos (`./Button`, `../utils`)
+  5. Tipos (`type { ... }`)
+- Separe grupos de imports com uma linha em branco.
+- Prefira named exports a default exports (exceto em páginas Next.js).
+- Nunca importe barrel files (`index.ts`) de dentro do próprio módulo.
+
+```json
+// tsconfig.json
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  }
+}
+```
+
+---
+
+## 16. DOCUMENTAÇÃO
+
+- Toda função exportada de `lib/` ou `services/` deve ter JSDoc.
+- README deve conter: descrição, pré-requisitos, setup local, variáveis de ambiente, scripts disponíveis e arquitetura.
+- Componentes complexos devem ter uma breve descrição de propósito e uso.
+- Documente decisões arquiteturais importantes em `docs/adr/` (Architecture Decision Records).
+
+```ts
+/**
+ * Busca um usuário pelo ID no banco de dados.
+ * @param id - UUID do usuário
+ * @returns O usuário encontrado ou null se não existir
+ * @throws {DatabaseError} Se a conexão com o banco falhar
+ */
+export async function getUserById(id: string): Promise<User | null> {
+  return db.user.findUnique({ where: { id } });
+}
+```
+
+---
+
+## 17. FERRAMENTAS OBRIGATÓRIAS
+
+| Ferramenta              | Propósito                          |
+|-------------------------|------------------------------------|
+| TypeScript 5+           | Tipagem estática                   |
+| ESLint + eslint-config-next | Linting                        |
+| Prettier                | Formatação automática              |
+| Zod                     | Validação de schema                |
+| React Hook Form         | Formulários                        |
+| Tailwind CSS            | Estilização                        |
+| Prisma ou Drizzle       | ORM / Query Builder                |
+| Vitest + RTL            | Testes unitários e de componentes  |
+| Playwright              | Testes E2E                         |
+| Husky + lint-staged     | Pre-commit hooks                   |
+| Sentry                  | Monitoramento de erros             |
+
+---
+
+## 18. ANTI-PADRÕES PROIBIDOS
+
+- ❌ `any` sem justificativa documentada
+- ❌ `console.log` em código de produção
+- ❌ `useEffect` para buscar dados em Server Components
+- ❌ Fetch no cliente quando pode ser feito no servidor
+- ❌ Mutação direta de estado ou props
+- ❌ Componentes com mais de 300 linhas sem motivo
+- ❌ Prop drilling além de 2 níveis
+- ❌ Magic numbers/strings sem constante nomeada
+- ❌ Segredos hardcoded no código
+- ❌ `dangerouslySetInnerHTML` sem sanitização
+- ❌ Importar bibliotecas pesadas no cliente sem necessidade
+- ❌ Ignorar erros de TypeScript com `// @ts-ignore`
+- ❌ Commits diretos na branch `main`
+- ❌ Código comentado esquecido no repositório
+- ❌ Lógica de negócio dentro de componentes React
+- ❌ `key={index}` em listas dinâmicas
+
+---
+
+## 19. CHECKLIST ANTES DE ABRIR PR
+
+- [ ] Tipagem TypeScript completa, sem `any`
+- [ ] Sem `console.log` ou código de debug
+- [ ] Validação de inputs com Zod
+- [ ] Tratamento de erros com try/catch e logs
+- [ ] Metadados de SEO presentes nas páginas novas
+- [ ] Acessibilidade verificada (semântica, foco, aria)
+- [ ] Dark mode funcional
+- [ ] Testes escritos e passando
+- [ ] ESLint e Prettier sem erros
+- [ ] Variáveis de ambiente documentadas no `.env.example`
+- [ ] Bundle não aumentou significativamente sem justificativa
+
+# ============================================================
+# Versão: 1.0.0 | Atualizado para Next.js 15, React 19, Node 22
+# ============================================================
