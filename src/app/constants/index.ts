@@ -120,9 +120,9 @@ export const MATERIALS: Material[] = [
   },
   {
     id: 'm4',
-    name: 'Suede',
+    name: 'Bouclé',
     type: 'Tecido',
-    textureUrl: `${R2_URL}/tecidos/tecido-suede-premium-mescla-marrom--2--xz8rinqcq1.webp`,
+    textureUrl: `${R2_URL}/tecidos/stella-prata.webp`,
   },
 ];
 
