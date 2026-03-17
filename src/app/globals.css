@@ -23,7 +23,39 @@
   }
 
   button{
-    @apply cursor-pointer transition-colors duration-300;
+    @apply cursor-pointer transition-colors duration-300 focus:ring-2 focus:ring-primary focus:ring-offset-2 active:scale-95;
+    transition: box-shadow 0.3s, transform 0.2s;
+  }
+
+  a {
+    @apply transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2;
+  }
+
+  .card {
+    @apply shadow-sm hover:shadow-xl transition-shadow duration-300;
+  }
+
+  .animate-fade-in {
+    animation: fadeIn 0.8s ease;
+  }
+  .animate-slide-up {
+    animation: slideUp 0.8s cubic-bezier(0.4,0,0.2,1);
+  }
+  .animate-bounce {
+    animation: bounce 1s infinite;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes slideUp {
+    from { transform: translateY(40px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
   }
 
   /* Scrollbar customizada */

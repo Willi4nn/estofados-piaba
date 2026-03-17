@@ -36,9 +36,17 @@ export function Header() {
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isMobileMenuOpen || isScrolled
-          ? 'bg-white/90 backdrop-blur-md shadow-sm py-4'
+          ? 'bg-white/80 backdrop-blur-lg shadow-lg py-4'
           : 'bg-transparent py-6'
       }`}
+      style={{
+        WebkitBackdropFilter: 'blur(16px)',
+        backdropFilter: 'blur(16px)',
+        boxShadow:
+          isMobileMenuOpen || isScrolled
+            ? '0 4px 24px rgba(0,0,0,0.08)'
+            : 'none',
+      }}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center">
