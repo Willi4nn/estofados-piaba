@@ -3,7 +3,7 @@ import { Material, Project, Service } from '../types';
 
 const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, '') ||
-  'https://estofados-piaba.vercel.app';
+  'https://www.estofadospiaba.site';
 
 const R2_URL =
   process.env.NEXT_PUBLIC_R2_URL ||
