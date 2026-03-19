@@ -26,10 +26,8 @@ export function Footer() {
 
   return (
     <footer className="bg-stone-950 text-stone-400 pt-18 pb-4 overflow-hidden relative">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.02)_0%,transparent_100%)] pointer-events-none" />
-
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-16 md:gap-8 mb-18">
+        <div className="grid grid-cols-1 md:grid-cols-8 gap-16 md:gap-8 mb-10">
           <div className="md:col-span-5 flex flex-col items-start">
             <h4 className="font-serif text-3xl md:text-4xl text-stone-100 mb-6">
               A Arte de Ressignificar o Conforto.
@@ -53,42 +51,44 @@ export function Footer() {
             </button>
           </div>
 
-          <div className="md:col-span-2 md:col-start-8 flex flex-col gap-4">
-            <span className="text-xs font-semibold tracking-[0.2em] text-stone-600 uppercase mb-2">
-              Navegação
-            </span>
-            {['Início', 'Serviços', 'Sobre', 'Portfólio', 'Contato'].map(
-              (item) => (
-                <a
-                  key={item}
-                  href={`#${item.toLowerCase().replace('í', 'i').replace('ó', 'o')}`}
-                  className="text-stone-400 hover:text-stone-100 transition-colors duration-300 w-fit relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-px after:bg-stone-100 hover:after:w-full after:transition-all after:duration-300"
-                >
-                  {item}
-                </a>
-              )
-            )}
-          </div>
+          <div className="flex flex-row gap-12">
+            <div className="md:col-span-2 md:col-start-8 flex flex-col gap-4">
+              <span className="text-xs font-semibold tracking-[0.2em] text-stone-600 uppercase mb-2">
+                Navegação
+              </span>
+              {['Início', 'Serviços', 'Sobre', 'Portfólio', 'Contato'].map(
+                (item) => (
+                  <a
+                    key={item}
+                    href={`#${item.toLowerCase().replace('í', 'i').replace('ó', 'o')}`}
+                    className="text-stone-400 hover:text-stone-100 transition-colors duration-300 w-fit relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-px after:bg-stone-100 hover:after:w-full after:transition-all after:duration-300"
+                  >
+                    {item}
+                  </a>
+                )
+              )}
+            </div>
 
-          <div className="md:col-span-3 flex flex-col gap-4">
-            <span className="text-xs font-semibold tracking-[0.2em] text-stone-600 uppercase mb-2">
-              Social
-            </span>
-            {socialLinks.map((link) => (
-              <a
-                key={link.name}
-                href={link.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={link['aria-label']}
-                className="group flex items-center gap-3 text-stone-400 hover:text-stone-100 transition-colors duration-300 w-fit"
-              >
-                {link.icon}
-                <span className="relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-px after:bg-stone-100 hover:after:w-full after:transition-all after:duration-300">
-                  {link.name}
-                </span>
-              </a>
-            ))}
+            <div className="md:col-span-3 flex flex-col gap-4">
+              <span className="text-xs font-semibold tracking-[0.2em] text-stone-600 uppercase mb-2">
+                Social
+              </span>
+              {socialLinks.map((link) => (
+                <a
+                  key={link.name}
+                  href={link.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={link['aria-label']}
+                  className="group flex items-center gap-3 text-stone-400 hover:text-stone-100 transition-colors duration-300 w-fit"
+                >
+                  {link.icon}
+                  <span className="relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-px after:bg-stone-100 hover:after:w-full after:transition-all after:duration-300">
+                    {link.name}
+                  </span>
+                </a>
+              ))}
+            </div>
           </div>
         </div>
 
