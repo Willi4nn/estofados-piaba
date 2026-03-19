@@ -79,9 +79,9 @@ export function Hero() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1, delay: 1.5 }}
-        className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
+        className="absolute bottom-16 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
       >
-        <span className="text-[9px] uppercase tracking-[0.3em] text-stone-400">
+        <span className="text-[12px] font-bold uppercase tracking-[0.3em] text-stone-400">
           Descubra
         </span>
         <motion.div
