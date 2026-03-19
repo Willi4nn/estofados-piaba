@@ -1,59 +1,113 @@
+'use client';
+
+import { motion } from 'framer-motion';
+import { ArrowUpRight } from 'lucide-react';
 import { SiFacebook, SiInstagram } from 'react-icons/si';
-import Image from 'next/image';
 
 export function Footer() {
   const socialLinks = [
     {
+      name: 'Instagram',
       href: 'https://www.instagram.com/estofados_piaba/',
-      icon: <SiInstagram size={28} aria-hidden="true" />,
+      icon: <SiInstagram size={20} aria-hidden="true" />,
       'aria-label': 'Siga Estofados Piaba no Instagram',
     },
     {
+      name: 'Facebook',
       href: 'https://www.facebook.com/profile.php?id=100091404635850',
-      icon: <SiFacebook size={28} aria-hidden="true" />,
+      icon: <SiFacebook size={20} aria-hidden="true" />,
       'aria-label': 'Siga Estofados Piaba no Facebook',
     },
   ];
 
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   return (
-    <footer className="bg-primary text-white py-8 md:py-12 border-t border-stone-800">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col md:flex-row justify-between items-center gap-6">
-          <div className="text-center md:text-left flex flex-col items-center md:items-start gap-4">
-            <Image
-              src="/piaba-logo-2-white.png"
-              alt="Logo Estofados Piaba"
-              width={180}
-              height={96}
-              className="h-24 w-auto"
-            />
-            <p className="text-stone-400 text-sm">
-              Transformando ambientes, restaurando histórias.
+    <footer className="bg-stone-950 text-stone-400 pt-18 pb-4 overflow-hidden relative">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.02)_0%,transparent_100%)] pointer-events-none" />
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-16 md:gap-8 mb-18">
+          <div className="md:col-span-5 flex flex-col items-start">
+            <h4 className="font-serif text-3xl md:text-4xl text-stone-100 mb-6">
+              A Arte de Ressignificar o Conforto.
+            </h4>
+            <p className="text-stone-500 font-light leading-relaxed max-w-sm text-pretty mb-5">
+              Desde 1979, dedicamos nossa paixão à restauração e criação de
+              estofados que transcendem o tempo, unindo técnicas tradicionais ao
+              design contemporâneo.
             </p>
+            <button
+              onClick={scrollToTop}
+              className="group flex items-center gap-3 text-xs uppercase tracking-[0.2em] font-medium text-stone-300 hover:text-white transition-colors duration-300"
+            >
+              Voltar ao Topo
+              <span className="p-2 rounded-full bg-stone-900 group-hover:bg-stone-800 transition-colors duration-300">
+                <ArrowUpRight
+                  size={14}
+                  className="group-hover:-translate-y-0.5 group-hover:translate-x-0.5 transition-transform duration-300"
+                />
+              </span>
+            </button>
           </div>
 
-          <div className="flex gap-6">
-            {socialLinks.map(
-              ({ href, icon, 'aria-label': ariaLabel }, index) => (
+          <div className="md:col-span-2 md:col-start-8 flex flex-col gap-4">
+            <span className="text-xs font-semibold tracking-[0.2em] text-stone-600 uppercase mb-2">
+              Navegação
+            </span>
+            {['Início', 'Serviços', 'Sobre', 'Portfólio', 'Contato'].map(
+              (item) => (
                 <a
-                  key={index}
-                  href={href}
-                  className="text-stone-400 hover:text-white transition-all duration-300 hover:scale-110 flex items-center justify-center w-16 h-16 p-4 group"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={ariaLabel}
+                  key={item}
+                  href={`#${item.toLowerCase().replace('í', 'i').replace('ó', 'o')}`}
+                  className="text-stone-400 hover:text-stone-100 transition-colors duration-300 w-fit relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-px after:bg-stone-100 hover:after:w-full after:transition-all after:duration-300"
                 >
-                  {icon}
+                  {item}
                 </a>
               )
             )}
           </div>
 
-          <div className="text-center md:text-right text-stone-500 text-sm">
-            <p>© {new Date().getFullYear()} Estofados Piaba.</p>
-            <p>Todos os direitos reservados.</p>
+          <div className="md:col-span-3 flex flex-col gap-4">
+            <span className="text-xs font-semibold tracking-[0.2em] text-stone-600 uppercase mb-2">
+              Social
+            </span>
+            {socialLinks.map((link) => (
+              <a
+                key={link.name}
+                href={link.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={link['aria-label']}
+                className="group flex items-center gap-3 text-stone-400 hover:text-stone-100 transition-colors duration-300 w-fit"
+              >
+                {link.icon}
+                <span className="relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-px after:bg-stone-100 hover:after:w-full after:transition-all after:duration-300">
+                  {link.name}
+                </span>
+              </a>
+            ))}
           </div>
         </div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+          className="w-full border-t border-stone-800/50 flex flex-col items-center py-6 mt-12"
+        >
+          <div className="w-full flex flex-col md:flex-row justify-between items-center gap-4 text-xs tracking-widest uppercase text-stone-600">
+            <p>© {new Date().getFullYear()} Estofados Piaba.</p>
+            <p>Todos os direitos reservados.</p>
+            <p className="flex items-center gap-2">
+              Feito com <span className="text-stone-500">♥</span> em Patos de
+              Minas
+            </p>
+          </div>
+        </motion.div>
       </div>
     </footer>
   );

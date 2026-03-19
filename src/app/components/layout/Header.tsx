@@ -2,6 +2,7 @@
 import { Menu, X } from 'lucide-react';
 import Image from 'next/image';
 import { useEffect, useState, type MouseEvent } from 'react';
+import { cn } from '../../lib/utils';
 
 export function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -76,7 +77,7 @@ export function Header() {
               />
             )}
             <span
-              className={`font-serif text-2xl font-semibold tracking-wide ${
+              className={`font-serif text-2xl font-bold tracking-wide ${
                 isMobileMenuOpen || isScrolled ? 'text-primary' : 'text-white'
               }`}
             >
@@ -85,36 +86,44 @@ export function Header() {
           </a>
 
           {/* Desktop Nav */}
-          <nav className="hidden md:flex gap-8">
+          <nav className="hidden md:flex gap-10">
             {navLinks.map((link) => (
               <a
                 key={link.name}
                 href={link.href}
                 onClick={(e) => handleNavClick(e, link.href)}
-                className={`text-sm uppercase tracking-widest font-medium hover:text-stone-400 transition-colors ${
-                  isScrolled ? 'text-primary' : 'text-white/90 hover:text-white'
-                }`}
+                className={cn(
+                  'relative text-[11px] uppercase tracking-[0.2em] font-semibold transition-colors duration-300 py-2 group',
+                  isScrolled
+                    ? 'text-stone-600 hover:text-primary'
+                    : 'text-white/80 hover:text-white'
+                )}
               >
                 {link.name}
+                <span
+                  className={cn(
+                    'absolute bottom-0 left-0 w-0 h-px transition-all duration-500 group-hover:w-full',
+                    isScrolled ? 'bg-primary' : 'bg-white'
+                  )}
+                />
               </a>
             ))}
           </nav>
 
-          {/* Mobile Menu Button */}
           <button
-            className="md:hidden p-2 text-primary focus:outline-none"
+            className="md:hidden p-2 focus:outline-none cursor-pointer hover:scale-105 transition-transform"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             aria-label="Menu"
           >
             {isMobileMenuOpen ? (
-              <X />
+              <X className="text-primary w-6 h-6" strokeWidth={1.5} />
             ) : (
               <Menu
-                className={
-                  !isScrolled && !isMobileMenuOpen
-                    ? 'text-white'
-                    : 'text-primary'
-                }
+                className={cn(
+                  'w-6 h-6',
+                  !isScrolled ? 'text-white' : 'text-primary'
+                )}
+                strokeWidth={1.5}
               />
             )}
           </button>

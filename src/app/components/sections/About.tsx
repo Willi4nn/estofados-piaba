@@ -1,72 +1,92 @@
-import { CheckCircle2 } from 'lucide-react';
-import Image from 'next/image';
+'use client';
+
+import { motion } from 'framer-motion';
+import { Check } from 'lucide-react';
 
 export function About() {
   return (
     <section
       id="about"
-      className="py-10 md:py-24 bg-white overflow-hidden"
-      aria-labelledby="about-heading"
+      className="py-24 md:py-32 bg-background overflow-hidden"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col lg:flex-row items-center gap-6 md:gap-12">
-          <div className="lg:w-1/2 relative w-full">
-            <div className="relative z-10">
-              <div className="relative w-full h-120 md:h-auto md:aspect-4/4 md:max-h-150">
-                <Image
-                  src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?q=80&w=800&auto=format&fit=crop"
-                  alt="Oficina de reforma de estofados"
-                  fill
-                  className="rounded-sm shadow-xl object-cover"
-                  sizes="(min-width: 1024px) 50vw, 100vw"
-                />
-              </div>
+        <div className="flex flex-col lg:flex-row items-center gap-16 lg:gap-24">
+          <motion.div
+            initial={{ opacity: 0, x: -40 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: '-100px' }}
+            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+            className="lg:w-1/2 relative w-full"
+          >
+            <div className="relative z-10 aspect-4/5 md:aspect-square overflow-hidden rounded-sm">
+              <motion.img
+                whileHover={{ scale: 1.05 }}
+                transition={{ duration: 1.5, ease: 'easeOut' }}
+                src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?q=80&w=1200&auto=format&fit=crop"
+                alt="Oficina de tapeçaria de luxo"
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 border border-black/10 pointer-events-none" />
             </div>
             {/* Decorative background element */}
             <div
               className="absolute -top-6 -left-6 md:-top-10 md:-left-10 w-full h-full border-2 border-stone-200 z-0 hidden md:block"
               aria-hidden="true"
             />
-          </div>
+          </motion.div>
 
-          <div className="lg:w-1/2">
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-100px' }}
+            transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+            className="lg:w-1/2"
+          >
             <h2 className="text-sm font-semibold text-stone-500 uppercase tracking-widest mb-2">
-              Sobre Nós
+              Nossa História
             </h2>
-            <h3
-              id="about-heading"
-              className="font-serif text-2xl md:text-4xl text-primary mb-4 md:mb-6"
-            >
-              Tradição em Conforto
+            <h3 className="font-serif text-4xl md:text-5xl text-primary mb-8 leading-tight">
+              Onde o tempo <br />
+              <span className="italic text-stone-500">
+                encontra a perfeição
+              </span>
             </h3>
-            <p className="text-stone-600 mb-4 md:mb-6 text-base md:text-lg leading-relaxed font-light">
-              Na Estofados Piaba, acreditamos que cada móvel conta uma história.
-              Há mais de 45 anos no mercado, somos especialistas em resgatar
-              memórias.
-            </p>
-            <p className="text-stone-600 mb-4 md:mb-6 leading-relaxed text-sm md:text-base hidden md:block">
-              Nosso ateliê combina técnicas artesanais tradicionais com
-              materiais contemporâneos de alta performance. Seja reformando uma
-              herança de família ou projetando o sofá dos seus sonhos, nossa
-              missão é entregar excelência.
-            </p>
 
-            <div className="space-y-3 md:space-y-4">
+            <div className="space-y-6 text-stone-600 font-light text-base md:text-lg leading-relaxed mb-10 text-pretty">
+              <p>
+                Na Estofados Piaba, acreditamos que cada móvel carrega uma alma
+                e uma história. Há mais de quatro décadas, dedicamos nossas mãos
+                para preservar memórias e elevar o conforto do seu lar.
+              </p>
+              <p>
+                Nosso ateliê é um santuário onde técnicas artesanais passadas de
+                geração em geração se encontram com os materiais mais nobres e
+                inovadores do mercado mundial. O resultado é uma tapeçaria de
+                excelência, feita para durar uma vida inteira.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-4 gap-x-8">
               {[
+                'Costura de Alta Precisão',
+                'Espumas de Alta Resiliência',
+                'Estruturas Reforçadas',
                 'Acabamento Impecável',
-                'Materiais Premium',
-                'Entrega e Retirada Inclusas',
-                'Garantia Total',
               ].map((item, i) => (
-                <div key={i} className="flex items-center gap-3">
-                  <CheckCircle2 className="text-stone-400 w-4 h-4 md:w-5 md:h-5" />
-                  <span className="text-primary font-medium text-sm md:text-base">
+                <div key={i} className="flex items-center gap-4 group">
+                  <div className="shrink-0 w-6 h-6 rounded-full border border-stone-300 flex items-center justify-center group-hover:border-primary group-hover:bg-primary transition-colors duration-300">
+                    <Check
+                      className="w-3 h-3 text-stone-400 group-hover:text-white transition-colors duration-300"
+                      strokeWidth={3}
+                    />
+                  </div>
+                  <span className="text-primary font-medium text-sm tracking-wide">
                     {item}
                   </span>
                 </div>
               ))}
             </div>
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>
