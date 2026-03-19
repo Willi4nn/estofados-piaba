@@ -1,5 +1,9 @@
 'use client';
-import type { AnchorHTMLAttributes, ButtonHTMLAttributes, ReactNode } from 'react';
+import type {
+  AnchorHTMLAttributes,
+  ButtonHTMLAttributes,
+  ReactNode,
+} from 'react';
 
 type BaseProps = {
   variant?: 'primary' | 'outline' | 'ghost' | 'white' | 'green';

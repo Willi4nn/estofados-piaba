@@ -60,17 +60,15 @@ export function Hero() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="flex flex-col sm:flex-row gap-6 justify-center items-center"
+          className="flex flex-col sm:flex-row gap-6 justify-center items-center w-full max-w-md mx-auto"
         >
-          {/* Using explicit 'white' variant to guarantee dark text on white background */}
-          <Button href="#contact" variant="white">
+          <Button href="#contact" variant="white" className="w-full max-w-55">
             Solicitar Orçamento
           </Button>
-
           <Button
             href="#portfolio"
             variant="outline"
-            className="text-white border-white hover:bg-white/10 hover:text-white"
+            className="text-white border-white hover:bg-white/10 hover:text-white w-full max-w-55"
           >
             Ver Projetos <ArrowRight className="ml-2 w-4 h-4" />
           </Button>
