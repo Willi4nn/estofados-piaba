@@ -80,7 +80,7 @@ export function Portfolio() {
           <div className="mt-12 text-center">
             <button
               onClick={() => setVisibleItems((prev) => prev + 6)}
-              className="group inline-flex items-center px-6 py-3 bg-white border border-stone-300 text-stone-700 rounded-sm hover:border-primary transition-all uppercase text-xs tracking-widest"
+              className="group inline-flex items-center px-6 py-3 bg-white border border-stone-300 text-stone-700 rounded-sm hover:border-primary transition-all uppercase text-xs font-bold tracking-widest"
             >
               Carregar Mais{' '}
               <Plus className="ml-2 w-4 h-4 group-hover:rotate-90 transition-transform" />

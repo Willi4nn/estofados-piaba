@@ -12,7 +12,7 @@ export function About() {
         <div className="flex flex-col lg:flex-row items-center gap-6 md:gap-12">
           <div className="lg:w-1/2 relative w-full">
             <div className="relative z-10">
-              <div className="relative w-full h-56 md:h-auto md:aspect-4/3 md:max-h-150">
+              <div className="relative w-full h-120 md:h-auto md:aspect-4/4 md:max-h-150">
                 <Image
                   src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?q=80&w=800&auto=format&fit=crop"
                   alt="Oficina de reforma de estofados"
