@@ -18,9 +18,9 @@ export function Materials() {
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           className="text-center "
         >
-          <span className="text-xs font-semibold tracking-[0.3em] text-stone-500 uppercase mb-4 block">
+          <h2 className="text-sm font-semibold text-stone-400 uppercase tracking-widest mb-2">
             Matérias-Primas
-          </span>
+          </h2>
           <h3
             id="materials-heading"
             className="font-serif text-2xl md:text-4xl mb-8 md:mb-12 text-white tracking-tight"
@@ -68,7 +68,7 @@ export function Materials() {
 
         <div className="mt-8 md:mt-16 flex flex-col items-center gap-3">
           <div className="h-px w-12 bg-stone-700" />
-          <p className="text-stone-500 text-xs md:text-sm max-w-md mx-auto leading-relaxed italic">
+          <p className="text-stone-400 text-xs md:text-sm max-w-md mx-auto leading-relaxed italic">
             Trabalhamos com os melhores fornecedores de tecidos nacionais e
             importados.
           </p>
