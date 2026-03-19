@@ -13,10 +13,8 @@ import { Portfolio } from './components/sections/Portfolio';
 import { Services } from './components/sections/Services';
 import { BUSINESS } from './constants';
 
-function Preloader({ onComplete }: { onComplete: () => void }) {
+export function Preloader({ onComplete }: { onComplete: () => void }) {
   useEffect(() => {
-    // 1.4s: O tempo exato para o cérebro registrar a marca de forma premium,
-    // sem prender o usuário na tela de carregamento.
     const timer = setTimeout(() => {
       onComplete();
     }, 1400);
@@ -27,28 +25,29 @@ function Preloader({ onComplete }: { onComplete: () => void }) {
     <motion.div
       initial={{ opacity: 1 }}
       exit={{ opacity: 0, y: '-100%' }}
-      transition={{ duration: 0.6, ease: [0.76, 0, 0.24, 1] }} // Saída super rápida
+      transition={{ duration: 0.6, ease: [0.76, 0, 0.24, 1] }}
       className="fixed inset-0 z-100 bg-stone-950 flex items-center justify-center overflow-hidden"
     >
       <div className="relative flex flex-col items-center">
         <motion.div
-          initial={{ opacity: 0, scale: 0.98 }} // Expansão quase imperceptível para não dar vertigem
+          initial={{ opacity: 0, scale: 0.98 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          className="overflow-hidden"
+          className="overflow-hidden py-4"
         >
           <motion.div
-            initial={{ y: 80 }} // Distância menor para uma subida mais rápida e seca
+            initial={{ y: 80 }}
             animate={{ y: 0 }}
-            transition={{ duration: 0.6, delay: 0, ease: [0.16, 1, 0.3, 1] }} // Começa no milissegundo zero
+            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
             className="flex flex-col items-center"
           >
-            {/* ESTOFADOS */}
-            <span className="font-serif text-[1.14rem] md:text-[2.07rem] text-stone-100 tracking-[0.4em] md:tracking-[0.6em] uppercase leading-none mb-1 md:mb-2 ml-[0.4em] md:ml-[0.6em]">
+            {/* Removi o mb-2 e adicionei um z-10 relativo para garantir sobreposição segura */}
+            <span className="relative z-10 font-serif text-[1.26rem] md:text-[2.26rem] text-stone-100 tracking-[0.4em] md:tracking-[0.6em] uppercase ml-[0.4em] md:ml-[0.7em]">
               Estofados
             </span>
-            {/* PIABA */}
-            <h1 className="font-serif text-6xl md:text-[8rem] font-bold text-stone-100 tracking-tighter uppercase leading-[0.75] -mt-1 md:-mt-3">
+
+            {/* Adicionada margem negativa (-mt-2 no mobile, -mt-6 no desktop) para aproximar */}
+            <h1 className="font-serif text-6xl md:text-[8rem] font-bold text-stone-100 uppercase -mt-2 md:-mt-6">
               Piaba
             </h1>
           </motion.div>
@@ -57,15 +56,15 @@ function Preloader({ onComplete }: { onComplete: () => void }) {
         <motion.div
           initial={{ width: 0, opacity: 0 }}
           animate={{ width: '100%', opacity: 1 }}
-          transition={{ duration: 0.5, delay: 0.2, ease: [0.16, 1, 0.3, 1] }} // Dispara quase junto com a logo
-          className="h-px bg-stone-500 mt-6 md:mt-10"
+          transition={{ duration: 0.5, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+          className="h-px bg-stone-500 mt-2 md:mt-4"
         />
 
         <motion.span
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4, delay: 0.3, ease: [0.16, 1, 0.3, 1] }} // Finaliza a sequência em um piscar de olhos
-          className="text-sm md:text-md uppercase tracking-[0.3em] text-stone-400 mt-6"
+          transition={{ duration: 0.4, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+          className="text-sm md:text-base uppercase tracking-[0.3em] text-stone-400 mt-6"
         >
           Desde 1979
         </motion.span>
