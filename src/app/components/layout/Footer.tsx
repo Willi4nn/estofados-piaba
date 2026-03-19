@@ -32,7 +32,7 @@ export function Footer() {
             <h4 className="font-serif text-3xl md:text-4xl text-stone-100 mb-6">
               A Arte de Ressignificar o Conforto.
             </h4>
-            <p className="text-stone-500 font-light leading-relaxed max-w-sm text-pretty mb-5">
+            <p className="text-stone-400 font-light leading-relaxed max-w-sm text-pretty mb-5">
               Desde 1979, dedicamos nossa paixão à restauração e criação de
               estofados que transcendem o tempo, unindo técnicas tradicionais ao
               design contemporâneo.
@@ -53,7 +53,7 @@ export function Footer() {
 
           <div className="flex flex-row gap-12">
             <div className="md:col-span-2 md:col-start-8 flex flex-col gap-4">
-              <span className="text-xs font-semibold tracking-[0.2em] text-stone-600 uppercase mb-2">
+              <span className="text-xs font-semibold tracking-[0.2em] text-stone-400 uppercase mb-2">
                 Navegação
               </span>
               {['Início', 'Serviços', 'Sobre', 'Portfólio', 'Contato'].map(
@@ -70,7 +70,7 @@ export function Footer() {
             </div>
 
             <div className="md:col-span-3 flex flex-col gap-4">
-              <span className="text-xs font-semibold tracking-[0.2em] text-stone-600 uppercase mb-2">
+              <span className="text-xs font-semibold tracking-[0.2em] text-stone-400 uppercase mb-2">
                 Social
               </span>
               {socialLinks.map((link) => (
@@ -97,13 +97,13 @@ export function Footer() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-          className="w-full border-t border-stone-800/50 flex flex-col items-center py-6 mt-12"
+          className="w-full border-t border-stone-700 flex flex-col items-center py-6 mt-12"
         >
-          <div className="w-full flex flex-col md:flex-row justify-between items-center gap-4 text-xs tracking-widest uppercase text-stone-600">
+          <div className="w-full flex flex-col md:flex-row justify-between items-center gap-4 text-xs tracking-widest uppercase text-stone-400">
             <p>© {new Date().getFullYear()} Estofados Piaba.</p>
             <p>Todos os direitos reservados.</p>
             <p className="flex items-center gap-2">
-              Feito com <span className="text-stone-500">♥</span> em Patos de
+              Feito com <span className="text-stone-400">♥</span> em Patos de
               Minas
             </p>
           </div>
