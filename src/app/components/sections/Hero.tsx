@@ -22,7 +22,7 @@ export function Hero() {
         <div className="absolute inset-0 bg-linear-to-b from-stone-900/60 via-stone-900/40 to-stone-900/70" />
       </div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-white">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-white pb-20 md:pb-0">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -50,7 +50,7 @@ export function Hero() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          className="max-w-2xl mx-auto text-base md:text-xl text-stone-200 mb-12 font-light leading-relaxed text-pretty"
+          className="max-w-2xl mx-auto text-base md:text-xl text-stone-200 mb-8 md:mb-12 font-light leading-relaxed text-pretty"
         >
           Estofaria especializada em reforma de móveis em Patos de Minas-MG.
           Unimos o design contemporâneo à durabilidade dos materiais e
@@ -79,7 +79,7 @@ export function Hero() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1, delay: 1.5 }}
-        className="absolute bottom-16 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
+        className="absolute bottom-6 md:bottom-16 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
       >
         <span className="text-[12px] font-bold uppercase tracking-[0.3em] text-stone-400">
           Descubra
