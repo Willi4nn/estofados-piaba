@@ -73,7 +73,7 @@ export function Portfolio() {
                   setActiveFilter(cat);
                   setVisibleItems(6);
                 }}
-                className={`px-4 py-2 rounded-full text-1xs md:text-2xs font-medium transition-all border ${
+                className={`px-4 py-2 rounded-xl text-1xs md:text-2xs font-medium transition-all border ${
                   activeFilter === cat
                     ? 'bg-primary text-white border-primary shadow-md'
                     : 'bg-white text-stone-600 border-stone-200 hover:bg-stone-50'
@@ -157,7 +157,7 @@ const ProjectCard = memo(
   }) => (
     <div
       onClick={() => onClick(index)}
-      className="group relative overflow-hidden h-48 md:h-80 rounded-sm cursor-pointer shadow-sm hover:shadow-xl transition-all"
+      className="group relative overflow-hidden h-48 md:h-80 rounded-lg cursor-pointer shadow-sm hover:shadow-xl transition-all"
     >
       <Image
         src={project.imageUrl}

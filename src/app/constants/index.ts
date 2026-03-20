@@ -31,7 +31,7 @@ export const BUSINESS = {
     'https://www.instagram.com/estofados_piaba/',
     'https://www.facebook.com/profile.php?id=100091404635850',
   ],
-  mapsUrl: 'https://maps.app.goo.gl/96R12cHqHsK7x9v49',
+  mapsUrl: 'https://maps.google.com/',
   ogImagePath: '/piaba-logo.png',
 } as const;
 
@@ -55,9 +55,16 @@ export const SERVICES: Service[] = [
   },
   {
     id: '3',
+    title: 'Almofadas Decorativas',
+    description:
+      'Confeccionamos almofadas decorativas sob medida. Escolha o tamanho, formato e tecido ideal para trazer ainda mais conforto e estilo para o seu ambiente.',
+    iconName: 'Palette',
+  },
+  {
+    id: '4',
     title: 'Estofamentos Premium',
     description:
-      'Trabalhamos com tecidos nobres: couro natural, suede, linho e veludo. Restauração de móveis antigos e de valor sentimental.',
+      'Trabalhamos com os melhores tecidos: Linho Misto, Camurça Michigan, Veludo Londres / Ônix, Sarja Peletizada, Bouclé, Couro Ecológico, Pet Friendly e Acqua Block.',
     iconName: 'Sparkles',
   },
 ];
@@ -66,22 +73,12 @@ export const SERVICES: Service[] = [
 // 2. PORTFÓLIO
 // ==========================================
 
-/**
- * Função auxiliar para formatar data para exibição
- * @param dateStr - Data no formato YYYY-MM-DD
- * @returns Data formatada (ex: "Agosto 2023") ou null
- */
-
-/**
- * Processa os dados brutos e gera projetos com metadados completos
- */
 export const PORTFOLIO: Project[] = Object.entries(PROJECTS_DATA).flatMap(
   ([category, projects]) =>
     projects.map((project, index) => {
       const images = project.images.filter((img) => !!img);
 
-      // Gera título automaticamente: sempre "Sofá #N" (ou poltrona, etc, se quiser customizar por categoria)
-      const baseName = category.slice(0, -1); // Ex: "Sofás" -> "Sofá"
+      const baseName = category.slice(0, -1);
       const title = project.title || `${baseName} #${index + 1}`;
 
       return {

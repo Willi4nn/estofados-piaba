@@ -2,7 +2,7 @@ export interface Service {
   id: string;
   title: string;
   description: string;
-  iconName: 'Sofa' | 'Scissors' | 'Sparkles';
+  iconName: 'Sofa' | 'Scissors' | 'Sparkles' | 'Palette';
 }
 
 export interface Project {

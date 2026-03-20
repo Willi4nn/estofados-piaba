@@ -3,7 +3,7 @@
 import {
   AlertCircle,
   Armchair,
-  ChevronRight,
+  Palette,
   Scissors,
   Sparkles,
 } from 'lucide-react';
@@ -14,21 +14,17 @@ const icons: Record<string, ElementType> = {
   Sofa: Armchair,
   Scissors: Scissors,
   Sparkles: Sparkles,
+  Palette: Palette,
   Default: AlertCircle,
 };
 
 export function Services() {
-  // 1. Estado para saber qual slide está ativo (0, 1 ou 2)
   const [activeIndex, setActiveIndex] = useState(0);
-
-  // 2. Referência para pegar o elemento de scroll
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  // 3. Função que calcula qual slide está visível
   const handleScroll = () => {
     if (scrollRef.current) {
       const { scrollLeft, clientWidth } = scrollRef.current;
-      // Calcula o índice arredondando a posição do scroll dividido pela largura
       const scrollIndex = Math.round(scrollLeft / clientWidth);
       setActiveIndex(scrollIndex);
     }
@@ -37,68 +33,76 @@ export function Services() {
   return (
     <section
       id="services"
-      className="py-10 md:py-24 bg-white"
+      className="py-16 bg-stone-100 pb-10"
       aria-labelledby="services-heading"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-6 md:mb-12">
-          <h2 className="text-sm font-semibold text-stone-500 uppercase tracking-widest mb-2">
-            Serviços de Estofaria
+          <h2 className="text-xs md:text-sm font-bold text-stone-400 uppercase tracking-[0.2em] mb-3">
+            Nossa Expertise
           </h2>
           <h3
             id="services-heading"
-            className="font-serif text-2xl md:text-4xl text-primary"
+            className="font-serif text-3xl md:text-5xl text-stone-800"
           >
-            Reforma de móveis em Patos de Minas
+            Serviços de <span className="text-primary italic">Estofaria</span>
           </h3>
+          <p className="mt-4 text-stone-500 max-w-2xl mx-auto text-sm md:text-base">
+            Trazendo vida nova aos seus móveis com maestria artesanal e os
+            melhores materiais do mercado em Patos de Minas.
+          </p>
         </div>
 
         {/* Container dos Cards */}
         <div
-          ref={scrollRef} // Conectamos a referência aqui
-          onScroll={handleScroll} // Dispara a função ao rolar
-          className="flex overflow-x-auto md:grid md:grid-cols-3 gap-3 md:gap-10 pb-4 md:pb-0 snap-x snap-mandatory no-scrollbar -mx-4 px-4 md:mx-0 md:px-0 scroll-smooth"
+          ref={scrollRef}
+          onScroll={handleScroll}
+          className="flex overflow-x-auto md:grid md:grid-cols-2 lg:grid-cols-4 gap-4  snap-x snap-mandatory no-scrollbar scroll-smooth items-stretch"
         >
           {SERVICES.map((service) => {
             const Icon = icons[service.iconName] || icons.Default;
             return (
               <div
                 key={service.id}
-                className="min-w-[85vw] md:min-w-0 snap-center group relative p-5 md:p-8 bg-stone-50 border border-stone-100 hover:shadow-xl hover:border-stone-200 transition-all duration-500 overflow-hidden rounded-sm"
+                // CORREÇÃO AQUI: Troquei border-stone-100 para border-stone-200
+                // e o hover:border-primary/20 para hover:border-stone-300
+                className="min-w-[85vw] mt-1 md:min-w-0 snap-center group relative p-6 bg-white border border-stone-200 rounded-2xl hover:border-stone-300 hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.05)] hover:-translate-y-1 transition-all duration-300 overflow-hidden flex"
               >
-                <div className="absolute top-0 left-0 w-1 h-0 bg-primary group-hover:h-full transition-all duration-500" />
+                {/* Gradiente de fundo sutil no hover */}
+                <div className="absolute inset-0 bg-linear-to-br from-primary/0 via-transparent to-primary/3 duration-500" />
 
-                <div className="flex justify-between items-start">
-                  <div className="mb-3 md:mb-5 p-3 md:p-4 bg-white inline-block shadow-sm rounded-full group-hover:scale-110 transition-transform duration-300 relative z-10">
+                <div className="relative z-10 flex flex-col h-full">
+                  {/* Ícone */}
+                  <div className="mb-6 md:mb-8 p-4 bg-stone-50 rounded-xl self-start group-hover:bg-primary/5 group-hover:scale-110 transition-all duration-300 border border-stone-100">
                     <Icon
-                      className="w-5 h-5 md:w-8 md:h-8 text-stone-700"
+                      className="w-6 h-6 md:w-8 md:h-8 text-stone-600 group-hover:text-primary transition-colors duration-500"
                       strokeWidth={1.5}
                     />
                   </div>
+
+                  {/* Textos */}
+                  <h4 className="font-serif text-xl md:text-2xl mb-3 text-stone-800 group-hover:text-primary transition-colors duration-300">
+                    {service.title}
+                  </h4>
+
+                  <p className="text-stone-500 leading-relaxed text-sm grow mb-2">
+                    {service.description}
+                  </p>
                 </div>
 
-                <h4 className="font-serif text-lg md:text-xl mb-2 md:mb-3 text-primary group-hover:translate-x-2 transition-transform duration-300 relative z-10 flex items-center gap-2">
-                  {service.title}
-                  <ChevronRight className="w-4 h-4 md:hidden text-stone-400" />
-                </h4>
-
-                <p className="text-stone-600 leading-relaxed text-sm mb-3 md:mb-5 relative z-10">
-                  {service.description}
-                </p>
-
-                <div className="absolute -bottom-10 -right-10 w-32 h-32 bg-stone-200/50 rounded-full blur-3xl group-hover:bg-stone-300/50 transition-colors" />
+                {/* Efeito visual decorativo no canto inferior */}
+                <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-primary/5 rounded-full blur-3xl group-hover:bg-primary/10 transition-colors duration-700 pointer-events-none" />
               </div>
             );
           })}
         </div>
 
-        {/* 4. Bolinhas agora reagem ao estado activeIndex */}
-        <div className="md:hidden flex justify-center gap-2 mt-4">
+        {/* Bolinhas de paginação mobile */}
+        <div className="md:hidden flex justify-center gap-2 mt-2">
           {SERVICES.map((_, index) => (
             <button
               key={index}
               onClick={() => {
-                // Opcional: Clique na bolinha leva ao card
                 if (scrollRef.current) {
                   scrollRef.current.scrollTo({
                     left: index * scrollRef.current.clientWidth,
@@ -106,11 +110,10 @@ export function Services() {
                   });
                 }
               }}
-              // Lógica da cor: Se o índice atual for igual ao ativo, fica escuro, senão claro.
-              className={`h-2 rounded-full transition-all duration-300 ${
+              className={`h-1.5 rounded-full transition-all duration-500 ${
                 index === activeIndex
-                  ? 'w-6 bg-primary' // Ativo: mais largo e cor principal (ex: marrom/preto)
-                  : 'w-2 bg-stone-300' // Inativo: bolinha pequena cinza
+                  ? 'w-8 bg-primary'
+                  : 'w-2 bg-stone-200 hover:bg-stone-300'
               }`}
               aria-label={`Ir para slide ${index + 1}`}
             />
