@@ -1,6 +1,20 @@
 import { RawProject } from '../src/app/types';
 
-export const PROJECTS_DATA: Record<string, RawProject[]> = {
+// FIX: Nomes de arquivo com espaços foram normalizados usando uma função
+// auxiliar que aplica encodeURIComponent apenas no nome do arquivo,
+// preservando as barras do path. Isso garante URLs válidas em qualquer
+// servidor/CDN sem precisar renomear os arquivos físicos agora.
+const encodePath = (path: string): string => {
+  return path
+    .split('/')
+    .map((segment) => encodeURIComponent(segment))
+    .join('/');
+};
+
+// Tipagem estendida internamente para garantir date sempre presente
+type RawProjectInternal = Omit<RawProject, 'date'> & { date: string };
+
+const raw: Record<string, RawProjectInternal[]> = {
   Sofas: [
     {
       images: ['/moveis/sofas/IMG-20260303-WA0001.jpg'],
@@ -14,6 +28,7 @@ export const PROJECTS_DATA: Record<string, RawProject[]> = {
       date: '2026-02-18',
     },
     {
+      // FIX: Espaços no nome do arquivo — path normalizado via encodePath
       images: ['/moveis/sofas/WhatsApp Image 2026-02-15 at 21.32.04.jpeg'],
       date: '2026-02-15',
     },
@@ -79,15 +94,24 @@ export const PROJECTS_DATA: Record<string, RawProject[]> = {
       date: '2022-03-22',
     },
     { images: ['/moveis/sofas/IMG-20220322-WA0001.jpg'], date: '2022-03-22' },
-    { images: ['/moveis/sofas/IMG_4065.JPEG'] },
-    { images: ['/moveis/sofas/IMG_4132.JPEG', '/moveis/sofas/IMG_4131.JPEG'] },
-    { images: ['/moveis/sofas/IMG_4150.JPEG', '/moveis/sofas/IMG_4153.JPEG'] },
+    // FIX: Projetos sem date recebem fallback explícito '1970-01-01'
+    // para garantir ordenação determinística.
+    { images: ['/moveis/sofas/IMG_4065.JPEG'], date: '1970-01-01' },
+    {
+      images: ['/moveis/sofas/IMG_4132.JPEG', '/moveis/sofas/IMG_4131.JPEG'],
+      date: '1970-01-01',
+    },
+    {
+      images: ['/moveis/sofas/IMG_4150.JPEG', '/moveis/sofas/IMG_4153.JPEG'],
+      date: '1970-01-01',
+    },
     {
       images: [
         '/moveis/sofas/IMG_4183.JPEG',
         '/moveis/sofas/IMG_4182.JPEG',
         '/moveis/sofas/IMG_4185.JPEG',
       ],
+      date: '1970-01-01',
     },
     {
       images: [
@@ -95,10 +119,15 @@ export const PROJECTS_DATA: Record<string, RawProject[]> = {
         '/moveis/sofas/IMG_4327.JPEG',
         '/moveis/sofas/IMG_4331.JPEG',
       ],
+      date: '1970-01-01',
     },
   ],
 
   Poltronas: [
+    {
+      images: ['/moveis/poltronas/20260316_103524.jpg'],
+      date: '2026-03-16',
+    },
     {
       images: ['/moveis/poltronas/20260218_090135.jpg'],
       date: '2026-02-18',
@@ -179,12 +208,12 @@ export const PROJECTS_DATA: Record<string, RawProject[]> = {
       images: ['/moveis/poltronas/IMG-20220512-WA0000.jpg'],
       date: '2022-05-12',
     },
-    { images: ['/moveis/poltronas/IMG_4201.JPEG'] },
-    { images: ['/moveis/poltronas/IMG_4311.JPEG'] },
-    { images: ['/moveis/poltronas/IMG_4561.JPEG'] },
-    { images: ['/moveis/poltronas/IMG_4588.JPEG'] },
-    { images: ['/moveis/poltronas/IMG_4687.JPEG'] },
-    { images: ['/moveis/poltronas/IMG_4705.JPEG'] },
+    { images: ['/moveis/poltronas/IMG_4201.JPEG'], date: '1970-01-01' },
+    { images: ['/moveis/poltronas/IMG_4311.JPEG'], date: '1970-01-01' },
+    { images: ['/moveis/poltronas/IMG_4561.JPEG'], date: '1970-01-01' },
+    { images: ['/moveis/poltronas/IMG_4588.JPEG'], date: '1970-01-01' },
+    { images: ['/moveis/poltronas/IMG_4687.JPEG'], date: '1970-01-01' },
+    { images: ['/moveis/poltronas/IMG_4705.JPEG'], date: '1970-01-01' },
   ],
 
   Cadeiras: [
@@ -370,7 +399,7 @@ export const PROJECTS_DATA: Record<string, RawProject[]> = {
       images: ['/moveis/cabeceiras/IMG-20220531-WA0005.jpg'],
       date: '2022-05-31',
     },
-    { images: ['/moveis/cabeceiras/IMG_4549.JPEG'] },
+    { images: ['/moveis/cabeceiras/IMG_4549.JPEG'], date: '1970-01-01' },
   ],
 
   Puffs: [
@@ -380,6 +409,21 @@ export const PROJECTS_DATA: Record<string, RawProject[]> = {
     },
     { images: ['/moveis/puffs/IMG-20230406-WA0002.jpg'], date: '2023-04-06' },
     { images: ['/moveis/puffs/IMG-20221110-WA0002.jpg'], date: '2022-11-10' },
-    { images: ['/moveis/puffs/IMG_4587.JPEG', '/moveis/puffs/IMG_4585.JPEG'] },
+    {
+      images: ['/moveis/puffs/IMG_4587.JPEG', '/moveis/puffs/IMG_4585.JPEG'],
+      date: '1970-01-01',
+    },
   ],
 };
+
+// FIX: Exportação normalizada — aplica encodePath em todos os paths de imagem,
+// resolvendo os espaços nos nomes de arquivo de forma centralizada e automática.
+export const PROJECTS_DATA: Record<string, RawProject[]> = Object.fromEntries(
+  Object.entries(raw).map(([category, projects]) => [
+    category,
+    projects.map((project) => ({
+      ...project,
+      images: project.images.map(encodePath),
+    })),
+  ])
+);

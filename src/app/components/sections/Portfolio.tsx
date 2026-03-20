@@ -1,7 +1,7 @@
 'use client';
 import { Images, Plus } from 'lucide-react';
 import Image from 'next/image';
-import { useMemo, useState } from 'react';
+import { memo, useCallback, useMemo, useState } from 'react';
 import { PORTFOLIO } from '../../constants';
 import { Lightbox } from '../ui/Lightbox';
 
@@ -10,9 +10,11 @@ export function Portfolio() {
   const [visibleItems, setVisibleItems] = useState(6);
   const [selectedIdx, setSelectedIdx] = useState<number | null>(null);
 
+  // FIX: deps corretas — embora PORTFOLIO seja constante, fica semanticamente
+  // correto e à prova de futuras mudanças (ex: PORTFOLIO vir de uma prop/context).
   const categories = useMemo(
     () => ['Todos', ...new Set(PORTFOLIO.map((p) => p.category))].sort(),
-    []
+    [PORTFOLIO]
   );
 
   const filtered = useMemo(
@@ -20,8 +22,34 @@ export function Portfolio() {
       activeFilter === 'Todos'
         ? PORTFOLIO
         : PORTFOLIO.filter((p) => p.category === activeFilter),
-    [activeFilter]
+    [activeFilter, PORTFOLIO]
   );
+
+  // FIX: slice dentro de useMemo para não recomputar a cada render.
+  const visibleProjects = useMemo(
+    () => filtered.slice(0, visibleItems),
+    [filtered, visibleItems]
+  );
+
+  const handleOpenLightbox = useCallback((index: number) => {
+    setSelectedIdx(index);
+  }, []);
+
+  // FIX: onNext e onPrev memoizados com useCallback, evitando recriação
+  // inline a cada render e re-mounts desnecessários no Lightbox.
+  const handleNext = useCallback(() => {
+    setSelectedIdx((prev) =>
+      prev !== null && prev < filtered.length - 1 ? prev + 1 : prev
+    );
+  }, [filtered.length]);
+
+  const handlePrev = useCallback(() => {
+    setSelectedIdx((prev) => (prev !== null && prev > 0 ? prev - 1 : prev));
+  }, []);
+
+  const handleCloseLightbox = useCallback(() => {
+    setSelectedIdx(null);
+  }, []);
 
   const selectedProject = selectedIdx !== null ? filtered[selectedIdx] : null;
 
@@ -59,11 +87,12 @@ export function Portfolio() {
 
         {/* Grid de Projetos */}
         <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6">
-          {filtered.slice(0, visibleItems).map((project, index) => (
+          {visibleProjects.map((project, index) => (
             <ProjectCard
               key={project.id}
               project={project}
-              onClick={() => setSelectedIdx(index)}
+              index={index}
+              onClick={handleOpenLightbox}
             />
           ))}
         </div>
@@ -89,24 +118,20 @@ export function Portfolio() {
         )}
       </div>
 
-      <Lightbox
-        isOpen={selectedIdx !== null}
-        images={selectedProject?.allImages}
-        title={selectedProject?.title}
-        onClose={() => setSelectedIdx(null)}
-        onNext={() =>
-          setSelectedIdx((prev) =>
-            prev !== null && prev < filtered.length - 1 ? prev + 1 : prev
-          )
-        }
-        onPrev={() =>
-          setSelectedIdx((prev) =>
-            prev !== null && prev > 0 ? prev - 1 : prev
-          )
-        }
-        hasNext={selectedIdx !== null && selectedIdx < filtered.length - 1}
-        hasPrev={selectedIdx !== null && selectedIdx > 0}
-      />
+      {/* FIX: Renderização condicional — Lightbox só monta (e só registra
+          event listeners / hooks) quando realmente está aberto. */}
+      {selectedIdx !== null && (
+        <Lightbox
+          isOpen
+          images={selectedProject?.allImages}
+          title={selectedProject?.title}
+          onClose={handleCloseLightbox}
+          onNext={handleNext}
+          onPrev={handlePrev}
+          hasNext={selectedIdx < filtered.length - 1}
+          hasPrev={selectedIdx > 0}
+        />
+      )}
     </section>
   );
 }
@@ -120,41 +145,46 @@ type Project = {
   allImages: string[];
 };
 
-const ProjectCard = ({
-  project,
-  onClick,
-}: {
-  project: Project;
-  onClick: () => void;
-}) => (
-  <div
-    onClick={onClick}
-    className="group relative overflow-hidden h-48 md:h-80 rounded-sm cursor-pointer shadow-sm hover:shadow-xl transition-all"
-  >
-    <Image
-      src={project.imageUrl}
-      alt={`${project.title} - Reforma de ${project.category.toLowerCase()} em Patos de Minas - Estofaria Piaba`}
-      width={400}
-      height={300}
-      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-      loading="lazy"
-    />
+const ProjectCard = memo(
+  ({
+    project,
+    index,
+    onClick,
+  }: {
+    project: Project;
+    index: number;
+    onClick: (idx: number) => void;
+  }) => (
+    <div
+      onClick={() => onClick(index)}
+      className="group relative overflow-hidden h-48 md:h-80 rounded-sm cursor-pointer shadow-sm hover:shadow-xl transition-all"
+    >
+      <Image
+        src={project.imageUrl}
+        alt={`${project.title} - Reforma de ${project.category.toLowerCase()} em Patos de Minas - Estofaria Piaba`}
+        fill
+        sizes="(max-width: 768px) 50vw, 33vw"
+        className="object-cover transition-transform duration-700 group-hover:scale-110"
+      />
 
-    {project.allImages.length > 1 && (
-      <div className="absolute top-2 left-2 z-10 bg-black/60 backdrop-blur-sm text-white px-2 py-1 rounded-sm text-sm flex items-center gap-1">
-        <Images size={16} /> +{project.allImages.length - 1}
+      {project.allImages.length > 1 && (
+        <div className="absolute top-2 left-2 z-10 bg-black/60 backdrop-blur-sm text-white px-2 py-1 rounded-sm text-sm flex items-center gap-1">
+          <Images size={16} /> +{project.allImages.length - 1}
+        </div>
+      )}
+
+      <div className="absolute inset-0 bg-linear-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+
+      <div className="absolute bottom-0 p-4 translate-y-4 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all">
+        <p className="text-[10px] text-stone-300 uppercase tracking-widest">
+          {project.category}
+        </p>
+        <h4 className="text-white font-serif text-sm md:text-lg">
+          {project.title}
+        </h4>
       </div>
-    )}
-
-    <div className="absolute inset-0 bg-linear-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-
-    <div className="absolute bottom-0 p-4 translate-y-4 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all">
-      <p className="text-[10px] text-stone-300 uppercase tracking-widest">
-        {project.category}
-      </p>
-      <h4 className="text-white font-serif text-sm md:text-lg">
-        {project.title}
-      </h4>
     </div>
-  </div>
+  )
 );
+
+ProjectCard.displayName = 'ProjectCard';

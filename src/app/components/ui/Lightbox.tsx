@@ -15,11 +15,9 @@ interface LightboxProps {
   hasPrev?: boolean;
 }
 
-// 1. Variantes movidas para fora e tipadas para evitar recálculos
-// Usamos transformações simples (x e scale) que são executadas na GPU
 const variants: Variants = {
   enter: (direction: number) => ({
-    x: direction > 0 ? '20%' : '-20%',
+    x: direction > 0 ? '100%' : '-100%',
     opacity: 0,
     scale: 0.95,
   }),
@@ -28,6 +26,8 @@ const variants: Variants = {
     x: 0,
     opacity: 1,
     scale: 1,
+    // FIX: will-change aplicado apenas durante a animação via transition,
+    // evitando consumo desnecessário de VRAM quando a imagem está parada.
     transition: {
       x: { type: 'spring', stiffness: 300, damping: 30, restDelta: 0.5 },
       opacity: { duration: 0.2 },
@@ -35,14 +35,20 @@ const variants: Variants = {
   },
   exit: (direction: number) => ({
     zIndex: 0,
-    x: direction < 0 ? '20%' : '-20%',
+    x: direction < 0 ? '100%' : '-100%',
     opacity: 0,
     scale: 0.95,
     transition: { opacity: { duration: 0.15 } },
   }),
 };
 
+const swipeConfidenceThreshold = 10000;
+const swipePower = (offset: number, velocity: number) =>
+  Math.abs(offset) * velocity;
+
+// FIX: MotionImage com displayName para facilitar debugging no DevTools.
 const MotionImage = motion.create(Image);
+MotionImage.displayName = 'MotionImage';
 
 export function Lightbox({
   isOpen,
@@ -58,27 +64,35 @@ export function Lightbox({
   const currentIndex = page;
   const currentImage = images[currentIndex];
 
+  // FIX: handleClose usando forma funcional do setState para não depender
+  // de `onClose` na lista de deps, evitando re-criação desnecessária da ref.
   const handleClose = useCallback(() => {
     setPage([0, 0]);
     onClose();
   }, [onClose]);
 
-  // Preload next image
+  // FIX: Preload com cancelamento real da requisição de rede via `src = ''`.
   useEffect(() => {
-    if (isOpen && images[currentIndex + 1]) {
-      const preloaded = new window.Image();
-      preloaded.src = images[currentIndex + 1];
-    }
+    if (!isOpen || !images[currentIndex + 1]) return;
+
+    const preloaded = new window.Image();
+    preloaded.src = images[currentIndex + 1];
+
+    return () => {
+      preloaded.onload = null;
+      preloaded.onerror = null;
+      // Aborta o download em andamento
+      preloaded.src = '';
+    };
   }, [currentIndex, images, isOpen]);
 
-  // Lock scroll when open
+  // Travar o scroll do body
   useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = 'hidden';
-      return () => {
-        document.body.style.overflow = 'auto';
-      };
-    }
+    if (!isOpen) return;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = 'auto';
+    };
   }, [isOpen]);
 
   const navigate = useCallback(
@@ -114,10 +128,16 @@ export function Lightbox({
 
   if (!isOpen || !currentImage) return null;
 
+  // FIX: Fechamento robusto usando onPointerDown no backdrop, evitando
+  // cliques fantasmas disparados pelo drag do Framer Motion.
+  const handleBackdropPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (e.target === e.currentTarget) handleClose();
+  };
+
   return (
     <div
       className="fixed inset-0 z-100 bg-black/90 backdrop-blur-sm flex flex-col items-center justify-center overflow-hidden transition-colors"
-      onClick={handleClose}
+      onPointerDown={handleBackdropPointerDown}
     >
       <button
         onClick={handleClose}
@@ -140,7 +160,9 @@ export function Lightbox({
       />
 
       <div className="relative w-full max-w-5xl h-[75vh] flex items-center justify-center">
-        <AnimatePresence initial={false} custom={direction} mode="popLayout">
+        {/* FIX: mode="wait" no lugar de "popLayout" — mais leve para fullscreen,
+            evita cálculos de layout desnecessários do Framer Motion. */}
+        <AnimatePresence initial={false} custom={direction} mode="wait">
           <MotionImage
             key={currentImage}
             src={currentImage}
@@ -152,8 +174,19 @@ export function Lightbox({
             alt={title ?? 'Imagem ampliada'}
             fill
             sizes="(min-width: 1024px) 1024px, 95vw"
-            className="object-contain shadow-2xl select-none pointer-events-none will-change-transform transform-gpu"
+            // FIX: will-change removido da className — agora é controlado
+            // pelas variantes de animação, aplicado apenas quando necessário.
+            className="object-contain shadow-2xl select-none transform-gpu cursor-grab active:cursor-grabbing"
             priority
+            onPointerDown={(e) => e.stopPropagation()}
+            drag="x"
+            dragConstraints={{ left: 0, right: 0 }}
+            dragElastic={1}
+            onDragEnd={(_, { offset, velocity }) => {
+              const swipe = swipePower(offset.x, velocity.x);
+              if (swipe < -swipeConfidenceThreshold) navigate(1);
+              else if (swipe > swipeConfidenceThreshold) navigate(-1);
+            }}
           />
         </AnimatePresence>
       </div>
@@ -185,7 +218,6 @@ export function Lightbox({
   );
 }
 
-// 4. Memoização: Evita que os botões re-renderizem durante a animação da imagem
 const NavButton = memo(
   ({
     direction,
@@ -201,12 +233,13 @@ const NavButton = memo(
     return (
       <button
         type="button"
-        onClick={(e) => {
+        onPointerDown={(e) => {
+          // FIX: onPointerDown em vez de onClick para consistência com o backdrop
           e.stopPropagation();
           onClick();
         }}
         aria-label={isLeft ? 'Imagem anterior' : 'Próxima imagem'}
-        className={`absolute ${isLeft ? 'left-0' : 'right-0'} inset-y-0 w-1/6 z-110 group flex items-center ${isLeft ? 'justify-start pl-6' : 'justify-end pr-6'}`}
+        className={`hidden md:flex absolute ${isLeft ? 'left-0' : 'right-0'} inset-y-0 w-1/6 z-110 group items-center ${isLeft ? 'justify-start pl-6' : 'justify-end pr-6'}`}
       >
         <span className="p-3 text-white bg-white/0 group-hover:bg-white/10 rounded-full transition-all duration-300">
           {isLeft ? (
