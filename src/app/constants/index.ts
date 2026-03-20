@@ -102,27 +102,51 @@ export const PORTFOLIO: Project[] = Object.entries(PROJECTS_DATA).flatMap(
 export const MATERIALS: Material[] = [
   {
     id: 'm1',
-    name: 'Linho Puro',
+    name: 'Linho e Linho Misto',
     type: 'Tecido',
-    textureUrl: `${R2_URL}/tecidos/linho-puro-linho-puro-natural--p-1647356715385.jpeg`,
+    textureUrl: `${R2_URL}/tecidos/linho-e-linho-misto.jpg`,
   },
   {
     id: 'm2',
-    name: 'Couro Natural',
-    type: 'Couro',
-    textureUrl: `${R2_URL}/tecidos/sofa-hash-couro-natural-amarula-210cm-frontal-detalhes.jpg`,
+    name: 'Suede Premium',
+    type: 'Tecido',
+    textureUrl: `${R2_URL}/tecidos/suede.jpg`,
   },
   {
     id: 'm3',
     name: 'Veludo Soft',
     type: 'Veludo',
-    textureUrl: `${R2_URL}/tecidos/images.jpg`,
+    textureUrl: `${R2_URL}/tecidos/veludo-soft.jpg`,
   },
   {
     id: 'm4',
+    name: 'Couro Ecológico',
+    type: 'Sintético',
+    textureUrl: `${R2_URL}/tecidos/couro-ecologico.jpg`,
+  },
+  {
+    id: 'm5',
     name: 'Bouclé',
     type: 'Tecido',
-    textureUrl: `${R2_URL}/tecidos/stella-prata.webp`,
+    textureUrl: `${R2_URL}/tecidos/boucle.jpg`,
+  },
+  {
+    id: 'm6',
+    name: 'Pet Friendly',
+    type: 'Tecido Técnico',
+    textureUrl: `${R2_URL}/tecidos/pet-friendly.jpg`,
+  },
+  {
+    id: 'm7',
+    name: 'Acquablock',
+    type: 'Impermeável',
+    textureUrl: `${R2_URL}/tecidos/acquablock.jpg`,
+  },
+  {
+    id: 'm8',
+    name: 'Sarja Peletizada',
+    type: 'Algodão',
+    textureUrl: `${R2_URL}/tecidos/sarja-peletizada.jpg`,
   },
 ];
 

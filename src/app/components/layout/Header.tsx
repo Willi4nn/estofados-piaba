@@ -95,7 +95,7 @@ export function Header() {
                 href={link.href}
                 onClick={(e) => handleNavClick(e, link.href)}
                 className={cn(
-                  'relative text-[11px] uppercase tracking-[0.2em] font-semibold transition-colors duration-300 py-2 group',
+                  'relative text-[12px] uppercase tracking-[0.2em] font-semibold transition-colors duration-300 py-2 group',
                   isScrolled
                     ? 'text-stone-600 hover:text-primary'
                     : 'text-white/80 hover:text-white'

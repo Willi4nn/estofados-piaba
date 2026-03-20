@@ -26,7 +26,7 @@ export interface RawProject {
 export interface Material {
   id: string;
   name: string;
-  type: 'Tecido' | 'Couro' | 'Veludo';
+  type: 'Tecido' | 'Couro' | 'Veludo' | string;
   textureUrl: string;
 }
 

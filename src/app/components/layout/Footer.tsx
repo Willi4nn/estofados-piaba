@@ -2,9 +2,19 @@
 
 import { motion } from 'framer-motion';
 import { ArrowUpRight } from 'lucide-react';
+import type { MouseEvent } from 'react'; // Importado para tipagem
 import { SiFacebook, SiInstagram } from 'react-icons/si';
 
 export function Footer() {
+  // 1. Sincronizado com os mesmos hrefs do Header
+  const navLinks = [
+    { name: 'Início', href: '#hero' },
+    { name: 'Serviços', href: '#services' },
+    { name: 'Sobre', href: '#about' },
+    { name: 'Portfólio', href: '#portfolio' },
+    { name: 'Contato', href: '#contact' },
+  ];
+
   const socialLinks = [
     {
       name: 'Instagram',
@@ -19,6 +29,15 @@ export function Footer() {
       'aria-label': 'Siga Estofados Piaba no Facebook',
     },
   ];
+
+  // 2. Função de clique idêntica à do Header para manter o comportamento
+  const handleNavClick = (e: MouseEvent<HTMLAnchorElement>, href: string) => {
+    e.preventDefault();
+    const element = document.querySelector(href);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -39,7 +58,7 @@ export function Footer() {
             </p>
             <button
               onClick={scrollToTop}
-              className="group flex items-center gap-3 text-xs uppercase tracking-[0.2em] font-medium text-stone-300 hover:text-white transition-colors duration-300"
+              className="group flex items-center gap-3 text-xs uppercase tracking-[0.2em] font-medium text-stone-300 hover:text-white transition-colors duration-300 cursor-pointer"
             >
               Voltar ao Topo
               <span className="p-2 rounded-full bg-stone-900 group-hover:bg-stone-800 transition-colors duration-300">
@@ -56,17 +75,17 @@ export function Footer() {
               <span className="text-xs font-semibold tracking-[0.2em] text-stone-400 uppercase mb-2">
                 Navegação
               </span>
-              {['Início', 'Serviços', 'Sobre', 'Portfólio', 'Contato'].map(
-                (item) => (
-                  <a
-                    key={item}
-                    href={`#${item.toLowerCase().replace('í', 'i').replace('ó', 'o')}`}
-                    className="text-stone-400 hover:text-stone-100 transition-colors duration-300 w-fit relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-px after:bg-stone-100 hover:after:w-full after:transition-all after:duration-300"
-                  >
-                    {item}
-                  </a>
-                )
-              )}
+              {/* 3. Mapeamento corrigido utilizando a lista navLinks */}
+              {navLinks.map((link) => (
+                <a
+                  key={link.name}
+                  href={link.href}
+                  onClick={(e) => handleNavClick(e, link.href)}
+                  className="text-stone-400 hover:text-stone-100 transition-colors duration-300 w-fit relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-px after:bg-stone-100 hover:after:w-full after:transition-all after:duration-300"
+                >
+                  {link.name}
+                </a>
+              ))}
             </div>
 
             <div className="md:col-span-3 flex flex-col gap-4">
