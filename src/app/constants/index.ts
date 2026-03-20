@@ -108,13 +108,13 @@ export const MATERIALS: Material[] = [
   },
   {
     id: 'm2',
-    name: 'Suede Premium',
+    name: 'Camurça Michigan',
     type: 'Tecido',
-    textureUrl: `${R2_URL}/tecidos/suede.jpg`,
+    textureUrl: `${R2_URL}/tecidos/camurca-michigan.jpg`,
   },
   {
     id: 'm3',
-    name: 'Veludo Soft',
+    name: 'Veludo Londres / Ônix',
     type: 'Veludo',
     textureUrl: `${R2_URL}/tecidos/veludo-soft.jpg`,
   },
@@ -138,7 +138,7 @@ export const MATERIALS: Material[] = [
   },
   {
     id: 'm7',
-    name: 'Acquablock',
+    name: 'Acqua Block',
     type: 'Impermeável',
     textureUrl: `${R2_URL}/tecidos/acquablock.jpg`,
   },

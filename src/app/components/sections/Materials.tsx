@@ -30,7 +30,7 @@ export function Materials() {
         </motion.div>
 
         {/* 2 colunas mobile, 4 tablet, 8 desktop na mesma linha. gap-y-5 reduz bem o espaço no mobile */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-y-5 gap-x-2 lg:gap-x-4">
+        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-y-2 gap-x-2 lg:gap-x-4">
           {MATERIALS.map((material, index) => (
             <motion.div
               key={material.id}
