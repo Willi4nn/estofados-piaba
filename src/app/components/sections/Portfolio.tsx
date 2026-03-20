@@ -14,7 +14,7 @@ export function Portfolio() {
   // correto e à prova de futuras mudanças (ex: PORTFOLIO vir de uma prop/context).
   const categories = useMemo(
     () => ['Todos', ...new Set(PORTFOLIO.map((p) => p.category))].sort(),
-    [PORTFOLIO]
+    []
   );
 
   const filtered = useMemo(
@@ -22,7 +22,7 @@ export function Portfolio() {
       activeFilter === 'Todos'
         ? PORTFOLIO
         : PORTFOLIO.filter((p) => p.category === activeFilter),
-    [activeFilter, PORTFOLIO]
+    [activeFilter]
   );
 
   // FIX: slice dentro de useMemo para não recomputar a cada render.
