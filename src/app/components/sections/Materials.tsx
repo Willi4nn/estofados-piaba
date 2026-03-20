@@ -61,12 +61,12 @@ export function Materials() {
               </div>
 
               {/* Texto com tipografia refinada */}
-              <div className="flex flex-col items-center h-8 justify-start">
+              <div className="flex flex-col items-center min-h-14 justify-start">
                 <span className="text-[10px] md:text-xs uppercase tracking-[0.2em] font-semibold text-stone-400 group-hover:text-white transition-colors duration-300 text-center px-1">
                   {material.name}
                 </span>
-                {/* Micro-interação: Linha que expande */}
-                <div className="h-px w-0 bg-stone-300 group-hover:w-6 transition-all duration-500 ease-out mt-1 md:mt-2" />
+                {/* 2. Adicionamos shrink-0 na linha */}
+                <div className="shrink-0 h-px w-0 bg-stone-300 group-hover:w-6 transition-all duration-500 ease-out mt-1 md:mt-2" />
               </div>
             </motion.div>
           ))}
