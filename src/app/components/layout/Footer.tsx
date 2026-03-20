@@ -72,7 +72,7 @@ export function Footer() {
 
           <div className="flex flex-row gap-12">
             <div className="md:col-span-2 md:col-start-8 flex flex-col gap-4">
-              <span className="text-xs font-semibold tracking-[0.2em] text-stone-400 uppercase mb-2">
+              <span className="text-xs font-semibold tracking-[0.2em] text-stone-100 uppercase mb-2">
                 Navegação
               </span>
               {/* 3. Mapeamento corrigido utilizando a lista navLinks */}
@@ -89,7 +89,7 @@ export function Footer() {
             </div>
 
             <div className="md:col-span-3 flex flex-col gap-4">
-              <span className="text-xs font-semibold tracking-[0.2em] text-stone-400 uppercase mb-2">
+              <span className="text-xs font-semibold tracking-[0.2em] text-stone-100 uppercase mb-2">
                 Social
               </span>
               {socialLinks.map((link) => (
