@@ -63,7 +63,7 @@ const jsonLdLocalBusiness = {
     ratingValue: '5',
     reviewCount: '10',
     bestRating: '5',
-    worstRating: '0',
+    worstRating: '1',
   },
   hasOfferCatalog: {
     '@type': 'OfferCatalog',
@@ -175,20 +175,20 @@ export default function Home() {
   return (
     <>
       <script
-        type="application/ld+json"
         id="schema-local-business"
+        type="application/ld+json"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(jsonLdLocalBusiness),
         }}
       />
       <script
+        id="schema-faq" // <-- ID ADICIONADO
         type="application/ld+json"
-        id="schema-faq"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdFAQ) }}
       />
       <script
+        id="schema-breadcrumb" // <-- ID ADICIONADO
         type="application/ld+json"
-        id="schema-breadcrumb"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdBreadcrumb) }}
       />
 

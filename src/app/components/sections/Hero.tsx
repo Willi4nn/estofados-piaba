@@ -1,12 +1,12 @@
 'use client';
 
-// src/app/components/sections/Hero.tsx
-// SEO: Esta seção contém o único <h1> da página.
-// O H1 deve ser único, relevante e conter a palavra-chave principal.
-
 import { motion } from 'framer-motion';
 import { ArrowRight, ChevronDown } from 'lucide-react';
+import Image from 'next/image'; // <-- Importação do next/image
 import { Button } from '../ui/Button';
+
+// Criação do componente Image otimizado e animável
+const MotionImage = motion.create(Image);
 
 export function Hero() {
   return (
@@ -15,16 +15,18 @@ export function Hero() {
       className="relative h-svh min-h-150 flex items-center justify-center overflow-hidden"
       aria-label="Apresentação — Estofados Piaba"
     >
-      {/* Background Image with Overlay */}
+      {/* Imagem de Fundo Otimizada com Overlay */}
       <div className="absolute inset-0 z-0">
-        <motion.img
+        <MotionImage
           initial={{ scale: 1.1 }}
           animate={{ scale: 1 }}
           transition={{ duration: 20, ease: 'easeOut' }}
           src="https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?q=80&w=2070&auto=format&fit=crop"
-          // Alt descritivo com contexto local para SEO de imagem
           alt="Sofá elegante reformado pela Estofados Piaba em Patos de Minas"
-          className="w-full h-full object-cover"
+          fill // <-- Ocupa todo o contentor de forma responsiva
+          priority // <-- Essencial: Diz ao Google para carregar isto primeiro (LCP)
+          sizes="100vw"
+          className="object-cover"
         />
         <div className="absolute inset-0 bg-linear-to-b from-stone-900/60 via-stone-900/40 to-stone-900/70" />
       </div>
@@ -36,7 +38,6 @@ export function Hero() {
           transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
           className="flex flex-col items-center"
         >
-          {/* Eyebrow: inclui localidade + experiência — bom para snippets */}
           <p className="flex items-center gap-4 mb-6">
             <span className="h-px w-8 bg-stone-400" aria-hidden="true" />
             <span className="text-[10px] md:text-xs uppercase tracking-[0.4em] text-stone-300 font-medium">
@@ -46,12 +47,6 @@ export function Hero() {
           </p>
         </motion.div>
 
-        {/*
-          H1 ÚNICO DA PÁGINA — regras:
-          • Único H1 por página (o preloader usa <p> e <span> agora)
-          • Inclui a keyword principal de forma natural
-          • Não precisa ser só keyword — Google avalia contexto da página inteira
-        */}
         <motion.h1
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
@@ -62,11 +57,6 @@ export function Hero() {
           <span className="italic text-stone-300">em Patos de Minas</span>
         </motion.h1>
 
-        {/*
-          Parágrafo de suporte: inclui keywords secundárias de forma natural.
-          "estofaria", "reforma de móveis", "Patos de Minas-MG", "orçamento grátis"
-          são termos que usuários realmente pesquisam.
-        */}
         <motion.p
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
