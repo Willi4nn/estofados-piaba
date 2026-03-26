@@ -157,12 +157,13 @@ export function Contact() {
         href={`https://wa.me/${WHATSAPP_NUMBER}`}
         target="_blank"
         rel="noopener noreferrer"
+        aria-label="Fale connosco pelo WhatsApp"
         className="fixed bottom-6 right-6 z-50 bg-[#25D366] text-white p-4 rounded-full shadow-lg hover:bg-[#20bd5a] transition-all duration-300 hover:scale-110 flex items-center group overflow-hidden"
       >
-        {/* O flex-shrink-0 garante que o ícone não amasse durante a animação */}
         <FaWhatsapp size={28} className="text-white shrink-0" />
 
-        <span className="max-w-0 opacity-0 group-hover:max-w-xs group-hover:opacity-100 group-hover:ml-3 transition-all duration-500 ease-in-out whitespace-nowrap font-medium">
+        {/* A MUDANÇA É AQUI: Adicionado 'md:group-hover:...' para só expandir no Desktop */}
+        <span className="max-w-0 opacity-0 md:group-hover:max-w-xs md:group-hover:opacity-100 md:group-hover:ml-3 transition-all duration-500 ease-in-out whitespace-nowrap font-medium hidden md:inline-block">
           Orçamento Rápido
         </span>
       </a>

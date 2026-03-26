@@ -1,6 +1,6 @@
 'use client';
 import { AnimatePresence, motion, Variants } from 'framer-motion';
-import { ChevronLeft, ChevronRight, X } from 'lucide-react';
+import { ChevronLeft, ChevronRight, X, ZoomIn, ZoomOut } from 'lucide-react';
 import Image from 'next/image';
 import { memo, useCallback, useEffect, useState } from 'react';
 
@@ -15,40 +15,16 @@ interface LightboxProps {
   hasPrev?: boolean;
 }
 
-const variants: Variants = {
-  enter: (direction: number) => ({
-    x: direction > 0 ? '100%' : '-100%',
-    opacity: 0,
-    scale: 0.95,
-  }),
-  center: {
-    zIndex: 1,
-    x: 0,
-    opacity: 1,
-    scale: 1,
-    // FIX: will-change aplicado apenas durante a animação via transition,
-    // evitando consumo desnecessário de VRAM quando a imagem está parada.
-    transition: {
-      x: { type: 'spring', stiffness: 300, damping: 30, restDelta: 0.5 },
-      opacity: { duration: 0.2 },
-    },
-  },
-  exit: (direction: number) => ({
-    zIndex: 0,
-    x: direction < 0 ? '100%' : '-100%',
-    opacity: 0,
-    scale: 0.95,
-    transition: { opacity: { duration: 0.15 } },
-  }),
-};
-
 const swipeConfidenceThreshold = 10000;
 const swipePower = (offset: number, velocity: number) =>
   Math.abs(offset) * velocity;
 
-// FIX: MotionImage com displayName para facilitar debugging no DevTools.
 const MotionImage = motion.create(Image);
 MotionImage.displayName = 'MotionImage';
+
+// Limites de Zoom
+const MIN_SCALE = 1;
+const MAX_SCALE = 3.5; // Aumentado um pouco o limite de zoom
 
 export function Lightbox({
   isOpen,
@@ -61,42 +37,39 @@ export function Lightbox({
   hasPrev = false,
 }: LightboxProps) {
   const [[page, direction], setPage] = useState([0, 0]);
+  const [scale, setScale] = useState(1); // Estado de Zoom independente
+
   const currentIndex = page;
   const currentImage = images[currentIndex];
 
-  // FIX: handleClose usando forma funcional do setState para não depender
-  // de `onClose` na lista de deps, evitando re-criação desnecessária da ref.
   const handleClose = useCallback(() => {
     setPage([0, 0]);
+    setScale(1); // Reseta o zoom ao fechar
     onClose();
   }, [onClose]);
 
-  // FIX: Preload com cancelamento real da requisição de rede via `src = ''`.
   useEffect(() => {
     if (!isOpen || !images[currentIndex + 1]) return;
-
     const preloaded = new window.Image();
     preloaded.src = images[currentIndex + 1];
-
     return () => {
       preloaded.onload = null;
       preloaded.onerror = null;
-      // Aborta o download em andamento
       preloaded.src = '';
     };
   }, [currentIndex, images, isOpen]);
 
-  // Travar o scroll do body
   useEffect(() => {
     if (!isOpen) return;
     document.body.style.overflow = 'hidden';
     return () => {
-      document.body.style.overflow = 'auto';
+      document.body.style.overflow = '';
     };
   }, [isOpen]);
 
   const navigate = useCallback(
     (newDirection: number) => {
+      setScale(1); // Reseta o zoom ao trocar de imagem para evitar bugs
       const isNext = newDirection === 1;
       if (isNext) {
         if (currentIndex < images.length - 1) setPage([currentIndex + 1, 1]);
@@ -115,38 +88,110 @@ export function Lightbox({
     [currentIndex, images.length, hasNext, hasPrev, onNext, onPrev]
   );
 
+  // Ações de Zoom
+  const zoomIn = useCallback(
+    () => setScale((s) => Math.min(MAX_SCALE, s + 0.5)),
+    []
+  );
+  const zoomOut = useCallback(
+    () => setScale((s) => Math.max(MIN_SCALE, s - 0.5)),
+    []
+  );
+  const toggleZoom = useCallback(
+    () => setScale((s) => (s > 1 ? MIN_SCALE : 2.5)),
+    []
+  );
+
   useEffect(() => {
     if (!isOpen) return;
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') handleClose();
       if (e.key === 'ArrowRight') navigate(1);
       if (e.key === 'ArrowLeft') navigate(-1);
+      if (e.key === '+' || e.key === '=') zoomIn();
+      if (e.key === '-' || e.key === '_') zoomOut();
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [handleClose, isOpen, navigate]);
+  }, [handleClose, isOpen, navigate, zoomIn, zoomOut]);
 
   if (!isOpen || !currentImage) return null;
 
-  // FIX: Fechamento robusto usando onPointerDown no backdrop, evitando
-  // cliques fantasmas disparados pelo drag do Framer Motion.
   const handleBackdropPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
     if (e.target === e.currentTarget) handleClose();
   };
 
+  // Variantes AGORA APENAS PARA O WRAPPER INVISÍVEL (Resolve o bug do voo pro lado)
+  const slideVariants: Variants = {
+    enter: (direction: number) => ({
+      x: direction > 0 ? '100%' : '-100%',
+      opacity: 0,
+    }),
+    center: {
+      zIndex: 1,
+      x: 0,
+      opacity: 1,
+      transition: {
+        x: { type: 'spring', stiffness: 300, damping: 30, restDelta: 0.5 },
+        opacity: { duration: 0.2 },
+      },
+    },
+    exit: (direction: number) => ({
+      zIndex: 0,
+      x: direction < 0 ? '100%' : '-100%',
+      opacity: 0,
+      transition: { opacity: { duration: 0.15 } },
+    }),
+  };
+
   return (
     <div
-      className="fixed inset-0 z-100 bg-black/90 backdrop-blur-sm flex flex-col items-center justify-center overflow-hidden transition-colors"
+      className="fixed inset-0 z-100 bg-black/95 backdrop-blur-md flex flex-col items-center justify-center overflow-hidden transition-colors"
       onPointerDown={handleBackdropPointerDown}
     >
-      <button
-        onClick={handleClose}
-        className="absolute top-4 right-4 p-3 z-130 text-white bg-white/5 hover:bg-white/10 rounded-full transition-transform active:scale-90"
-        aria-label="Fechar"
-        type="button"
-      >
-        <X size={24} />
-      </button>
+      {/* Barra de Controles Aumentada (Top Direito) */}
+      <div className="absolute top-4 right-4 md:top-6 md:right-6 z-130 flex items-center gap-3 md:gap-5">
+        {/* Pílula de Zoom Mais Gordinha */}
+        <div className="flex items-center bg-white/10 rounded-full p-1.5 md:p-2 border border-white/10 backdrop-blur-md shadow-lg">
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              zoomOut();
+            }}
+            disabled={scale <= MIN_SCALE}
+            className="p-3 text-white hover:bg-white/20 rounded-full transition-all disabled:opacity-30 disabled:hover:bg-transparent"
+            aria-label="Afastar"
+          >
+            <ZoomOut size={24} className="md:w-6 md:h-6" />
+          </button>
+
+          <span className="text-white/90 text-sm md:text-base w-14 md:w-16 text-center font-bold tracking-wider cursor-default select-none">
+            {Math.round(scale * 100)}%
+          </span>
+
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              zoomIn();
+            }}
+            disabled={scale >= MAX_SCALE}
+            className="p-3 text-white hover:bg-white/20 rounded-full transition-all disabled:opacity-30 disabled:hover:bg-transparent"
+            aria-label="Aproximar"
+          >
+            <ZoomIn size={24} className="md:w-6 md:h-6" />
+          </button>
+        </div>
+
+        {/* Botão Fechar Gigante */}
+        <button
+          onClick={handleClose}
+          className="p-4 text-white bg-white/10 hover:bg-white/30 rounded-full transition-all active:scale-90 border border-white/10 backdrop-blur-md shadow-lg"
+          aria-label="Fechar"
+          type="button"
+        >
+          <X size={28} strokeWidth={2.5} className="md:w-8 md:h-8" />
+        </button>
+      </div>
 
       <NavButton
         direction="left"
@@ -159,55 +204,71 @@ export function Lightbox({
         visible={currentIndex < images.length - 1 || hasNext}
       />
 
-      <div className="relative w-full max-w-5xl h-[75vh] flex items-center justify-center">
-        {/* FIX: mode="wait" no lugar de "popLayout" — mais leve para fullscreen,
-            evita cálculos de layout desnecessários do Framer Motion. */}
+      <div className="relative w-full max-w-6xl h-[80vh] flex items-center justify-center overflow-visible">
         <AnimatePresence initial={false} custom={direction} mode="wait">
-          <MotionImage
+          {/* WRAPPER: Apenas Desliza */}
+          <motion.div
             key={currentImage}
-            src={currentImage}
             custom={direction}
-            variants={variants}
+            variants={slideVariants}
             initial="enter"
             animate="center"
             exit="exit"
-            alt={title ?? 'Imagem ampliada'}
-            fill
-            sizes="(min-width: 1024px) 1024px, 95vw"
-            // FIX: will-change removido da className — agora é controlado
-            // pelas variantes de animação, aplicado apenas quando necessário.
-            className="object-contain shadow-2xl select-none transform-gpu cursor-grab active:cursor-grabbing"
-            priority
-            onPointerDown={(e) => e.stopPropagation()}
-            drag="x"
-            dragConstraints={{ left: 0, right: 0 }}
-            dragElastic={1}
-            onDragEnd={(_, { offset, velocity }) => {
-              const swipe = swipePower(offset.x, velocity.x);
-              if (swipe < -swipeConfidenceThreshold) navigate(1);
-              else if (swipe > swipeConfidenceThreshold) navigate(-1);
-            }}
-          />
+            className="absolute inset-0 flex items-center justify-center"
+          >
+            {/* IMAGEM: Apenas faz Zoom e Arrasto (Pan) */}
+            <MotionImage
+              src={currentImage}
+              alt={title ?? 'Imagem ampliada'}
+              fill
+              sizes="(min-width: 1024px) 1024px, 95vw"
+              className={`object-contain shadow-2xl select-none transform-gpu active:cursor-grabbing ${
+                scale > 1 ? 'cursor-grab' : 'cursor-pointer'
+              }`}
+              priority
+              onPointerDown={(e) => e.stopPropagation()}
+              onDoubleClick={(e) => {
+                e.stopPropagation();
+                toggleZoom();
+              }}
+              // MÁGICA AQUI: Quando scale é 1, ele reseta o X e Y suavemente. Quando é maior, ele solta.
+              animate={
+                scale === 1 ? { scale: 1, x: 0, y: 0 } : { scale: scale }
+              }
+              transition={{ duration: 0.3, ease: 'easeOut' }}
+              drag={scale > 1 ? true : 'x'}
+              dragConstraints={scale > 1 ? undefined : { left: 0, right: 0 }}
+              dragElastic={scale > 1 ? 0 : 1}
+              onDragEnd={(_, { offset, velocity }) => {
+                // Se estivermos com zoom ativado, bloqueia a troca de foto para podermos passear pela imagem
+                if (scale > 1) return;
+
+                const swipe = swipePower(offset.x, velocity.x);
+                if (swipe < -swipeConfidenceThreshold) navigate(1);
+                else if (swipe > swipeConfidenceThreshold) navigate(-1);
+              }}
+            />
+          </motion.div>
         </AnimatePresence>
       </div>
 
-      <div className="z-120 mt-8 pointer-events-none flex flex-col items-center">
+      <div className="z-120 mt-6 pointer-events-none flex flex-col items-center">
         <AnimatePresence mode="wait">
           <motion.div
             key={currentImage + 'info'}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2 }}
             className="flex flex-col items-center"
           >
             {images.length > 1 && (
-              <span className="px-3 py-1 bg-white/5 rounded-full text-white/50 text-[10px] tracking-tighter">
+              <span className="px-5 py-2 bg-white/20 backdrop-blur-xl rounded-full text-white font-bold text-[11px] tracking-widest uppercase shadow-md">
                 {currentIndex + 1} / {images.length}
               </span>
             )}
             {title && (
-              <p className="mt-4 text-stone-300 font-light text-base text-center px-6">
+              <p className="mt-4 text-stone-200 font-medium text-lg text-center px-6 drop-shadow-lg">
                 {title}
               </p>
             )}
@@ -234,18 +295,22 @@ const NavButton = memo(
       <button
         type="button"
         onPointerDown={(e) => {
-          // FIX: onPointerDown em vez de onClick para consistência com o backdrop
           e.stopPropagation();
           onClick();
         }}
         aria-label={isLeft ? 'Imagem anterior' : 'Próxima imagem'}
-        className={`hidden md:flex absolute ${isLeft ? 'left-0' : 'right-0'} inset-y-0 w-1/6 z-110 group items-center ${isLeft ? 'justify-start pl-6' : 'justify-end pr-6'}`}
+        className={`hidden md:flex absolute ${
+          isLeft ? 'left-0' : 'right-0'
+        } inset-y-0 w-1/6 z-110 group items-center ${
+          isLeft ? 'justify-start pl-8' : 'justify-end pr-8'
+        }`}
       >
-        <span className="p-3 text-white bg-white/0 group-hover:bg-white/10 rounded-full transition-all duration-300">
+        {/* Botões das setas agora são Maiores e mais Visíveis */}
+        <span className="p-4 text-white bg-white/10 backdrop-blur-md border border-white/20 group-hover:bg-white/30 group-hover:scale-110 rounded-full transition-all duration-300 shadow-xl">
           {isLeft ? (
-            <ChevronLeft size={40} strokeWidth={1} />
+            <ChevronLeft size={44} strokeWidth={2} />
           ) : (
-            <ChevronRight size={40} strokeWidth={1} />
+            <ChevronRight size={44} strokeWidth={2} />
           )}
         </span>
       </button>
