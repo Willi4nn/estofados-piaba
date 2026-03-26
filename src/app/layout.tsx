@@ -1,8 +1,9 @@
+// src/app/layout.tsx
 import type { Metadata } from 'next';
 import { Inter, Playfair_Display } from 'next/font/google';
 
-import './globals.css';
 import { BUSINESS } from './constants';
+import './globals.css';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -16,58 +17,53 @@ const playfairDisplay = Playfair_Display({
   variable: '--font-serif',
 });
 
+// ─── Metadata global ──────────────────────────────────────────────────────────
+// Regras do title template:
+//   - Página inicial: usa `default` (sem template)
+//   - Outras páginas: "%s | Estofados Piaba"
 export const metadata: Metadata = {
   metadataBase: new URL(BUSINESS.url),
+
   title: {
-    default: 'Estofados Piaba | Reforma de móveis em Patos de Minas',
+    default: 'Estofados Piaba | Reforma de Sofás e Estofados em Patos de Minas',
     template: '%s | Estofados Piaba',
   },
+
+  // Description com 150-160 chars, incluindo cidade + serviços principais
   description:
-    'Estofaria especializada em reforma de sofás, poltronas e cabeceiras em Patos de Minas. Materiais premium e acabamento impecável.',
-  icons: {
-    icon: '/favicon.ico',
-    shortcut: '/favicon.ico',
-  },
+    'Reforma de sofás, poltronas, cadeiras e cabeceiras em Patos de Minas-MG. Mais de 45 anos de experiência, materiais premium e orçamento grátis. Ligue ou chame no WhatsApp!',
+
+  // Keywords locais e de serviço — Google não usa diretamente, mas
+  // outros buscadores (Bing, DuckDuckGo) ainda consideram.
+  keywords: [
+    'estofados Patos de Minas',
+    'reforma de sofá Patos de Minas',
+    'reforma de estofados Patos de Minas',
+    'estofaria Patos de Minas',
+    'reforma de poltrona Patos de Minas',
+    'cabeceira sob medida Patos de Minas',
+    'reforma de cadeira Patos de Minas',
+    'tapeceiro Patos de Minas',
+    'tapeçaria Patos de Minas',
+    'estofados MG',
+    'reforma de puff Patos de Minas',
+    'Estofados Piaba',
+    'estofaria Minas Gerais',
+    'reforma de móveis estofados',
+    'tecido pet friendly estofado',
+    'couro ecológico sofá',
+  ],
+
+  // Canonical aponta para a raiz — evita conteúdo duplicado
   alternates: {
     canonical: '/',
   },
-  keywords: [
-    'estofaria',
-    'reforma de sofá',
-    'reforma de poltrona',
-    'cabeceira sob medida',
-    'reforma de estofados',
-    'estofados em Patos de Minas',
-    'Patos de Minas',
-    'MG',
-  ],
+
   applicationName: BUSINESS.name,
   creator: BUSINESS.name,
   publisher: BUSINESS.name,
-  openGraph: {
-    title: BUSINESS.name,
-    description:
-      'Reforma de móveis em Patos de Minas com materiais premium e acabamento impecável.',
-    url: '/',
-    siteName: BUSINESS.name,
-    type: 'website',
-    locale: 'pt_BR',
-    images: [
-      {
-        url: BUSINESS.ogImagePath,
-        width: 1200,
-        height: 630,
-        alt: BUSINESS.name,
-      },
-    ],
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: BUSINESS.name,
-    description:
-      'Reforma de móveis em Patos de Minas com materiais premium e acabamento impecável.',
-    images: [BUSINESS.ogImagePath],
-  },
+
+  // Robots: indexar tudo, Google pode exibir imagens grandes e snippets completos
   robots: {
     index: true,
     follow: true,
@@ -79,6 +75,47 @@ export const metadata: Metadata = {
       'max-video-preview': -1,
     },
   },
+
+  // Open Graph — aparece ao compartilhar no WhatsApp, Facebook, etc.
+  openGraph: {
+    title: 'Estofados Piaba | Reforma de Sofás e Estofados em Patos de Minas',
+    description:
+      'Reforma de sofás, poltronas, cadeiras e cabeceiras em Patos de Minas-MG. Mais de 45 anos de experiência e materiais premium. Orçamento grátis!',
+    url: BUSINESS.url,
+    siteName: BUSINESS.name,
+    type: 'website',
+    locale: 'pt_BR',
+    images: [
+      {
+        url: BUSINESS.ogImagePath,
+        width: 1200,
+        height: 630,
+        alt: 'Estofados Piaba — Reforma de Estofados em Patos de Minas',
+      },
+    ],
+  },
+
+  // Twitter Card — usado pelo X (Twitter) e por alguns preview scrapers
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Estofados Piaba | Reforma de Sofás em Patos de Minas',
+    description:
+      'Estofaria com mais de 45 anos em Patos de Minas. Reforma de sofás, poltronas, cabeceiras e cadeiras. Orçamento grátis!',
+    images: [BUSINESS.ogImagePath],
+  },
+
+  // Ícones
+  icons: {
+    icon: '/favicon.ico',
+    shortcut: '/favicon.ico',
+    // Adicionar apple-touch-icon melhorando presença no iOS
+    apple: '/apple-touch-icon.png',
+  },
+
+  // Verificação de domínio — adicione o código real após verificar no Google Search Console
+  // verification: {
+  //   google: 'SEU_CODIGO_GOOGLE_SEARCH_CONSOLE',
+  // },
 };
 
 export default function RootLayout({
@@ -98,4 +135,3 @@ export default function RootLayout({
     </html>
   );
 }
-
