@@ -72,12 +72,12 @@ export const SERVICES: Service[] = [
 // ==========================================
 // 2. PORTFÓLIO
 // ==========================================
+const CACHE_KEY = 'v=20260326';
 
 export const PORTFOLIO: Project[] = Object.entries(PROJECTS_DATA).flatMap(
   ([category, projects]) =>
     projects.map((project, index) => {
       const images = project.images.filter((img) => !!img);
-
       const baseName = category.slice(0, -1);
       const title = project.title || `${baseName} #${index + 1}`;
 
@@ -85,8 +85,9 @@ export const PORTFOLIO: Project[] = Object.entries(PROJECTS_DATA).flatMap(
         id: `${category.toLowerCase()}-${index}`,
         title,
         category,
-        imageUrl: `${R2_URL}${images[0] || ''}`,
-        allImages: images.map((img) => `${R2_URL}${img}`),
+        // Adicionando a CACHE_KEY ao final das URLs
+        imageUrl: `${R2_URL}${images[0] || ''}?${CACHE_KEY}`,
+        allImages: images.map((img) => `${R2_URL}${img}?${CACHE_KEY}`),
         date: project.date,
         description: project.description,
       };
