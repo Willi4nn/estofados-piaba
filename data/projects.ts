@@ -373,10 +373,6 @@ const raw: Record<string, RawProjectInternal[]> = {
       date: '2022-09-29',
     },
     {
-      images: ['/moveis/cabeceiras/IMG-20220928-WA0000.jpg'],
-      date: '2022-09-28',
-    },
-    {
       images: ['/moveis/cabeceiras/IMG-20220701-WA0002.jpg'],
       date: '2022-07-01',
     },
