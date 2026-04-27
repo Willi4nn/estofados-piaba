@@ -11,7 +11,7 @@ export function Hero() {
   return (
     <section
       id="hero"
-      className="relative min-h-[100svh] flex items-center justify-center overflow-hidden"
+      className="relative min-h-[100svh] flex items-center justify-center overflow-hidden bg-secondary-950"
       aria-label="Apresentação — Estofados Piaba"
     >
       <div className="absolute inset-0 z-0">
@@ -26,8 +26,8 @@ export function Hero() {
           sizes="100vw"
           className="object-cover"
         />
-        {/* Overlay alterado: Mais escuro no topo (950) e no rodapé, meio ligeiramente mais suave */}
-        <div className="absolute inset-0 bg-linear-to-b from-secondary-950/60 via-primary-50/30 to-secondary-950/60" />
+        {/* Overlay corrigido: Gradiente de Preto/Marinho escuro, sem a cor clara no meio que "lavava" a imagem */}
+        <div className="absolute inset-0 bg-linear-to-b from-secondary-950/90 via-secondary-950/40 to-secondary-950/90" />
       </div>
 
       <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-white pt-28 pb-28 md:pt-0 md:pb-0">
@@ -42,7 +42,7 @@ export function Hero() {
               className="h-px w-6 md:w-8 bg-primary-500"
               aria-hidden="true"
             />
-            <span className="text-[9px] md:text-xs uppercase tracking-[0.3em] md:tracking-[0.4em] text-primary-50 font-medium">
+            <span className="text-[9px] md:text-xs uppercase tracking-[0.3em] md:tracking-[0.4em] text-white/90 font-medium">
               Estofados em Patos de Minas há 45 Anos
             </span>
             <span
@@ -59,14 +59,14 @@ export function Hero() {
           className="font-serif text-5xl md:text-7xl lg:text-[6rem] font-light mb-6 md:mb-8 leading-[1.1] tracking-tight text-balance text-white"
         >
           Reforma de Estofados <br />
-          <span className="italic text-primary-600">em Patos de Minas</span>
+          <span className="italic text-primary-500">em Patos de Minas</span>
         </motion.h1>
 
         <motion.p
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          className="max-w-2xl mx-auto text-sm sm:text-base md:text-xl text-primary-50 mb-8 md:mb-12 font-light leading-relaxed text-pretty"
+          className="max-w-2xl mx-auto text-sm sm:text-base md:text-xl text-white/80 mb-8 md:mb-12 font-light leading-relaxed text-pretty"
         >
           Estofaria especializada em reforma de sofás, poltronas e cadeiras em{' '}
           <strong className="font-semibold text-white">
@@ -107,14 +107,14 @@ export function Hero() {
         className="absolute bottom-6 md:bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
         aria-hidden="true"
       >
-        <span className="text-[10px] md:text-[12px] font-bold uppercase tracking-[0.3em] text-primary-50">
+        <span className="text-[10px] md:text-[12px] font-bold uppercase tracking-[0.3em] text-white/70">
           Descubra
         </span>
         <motion.div
           animate={{ y: [0, 8, 0] }}
           transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
         >
-          <ChevronDown className="w-4 h-4 text-primary-50" />
+          <ChevronDown className="w-4 h-4 text-white/70" />
         </motion.div>
       </motion.div>
     </section>

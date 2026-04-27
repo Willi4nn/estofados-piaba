@@ -45,8 +45,9 @@ export function Contact() {
 
             <div className="space-y-6 md:space-y-8">
               <div className="flex items-center gap-5">
-                <div className="p-3.5 bg-primary-50 rounded-full text-primary-600">
-                  <Phone size={22} />
+                {/* Fundo do ícone ajustado para algo neutro/premium em vez de azul bebê */}
+                <div className="p-3.5 bg-background border border-border-light rounded-full text-primary-500 shadow-sm">
+                  <Phone size={20} />
                 </div>
                 <div>
                   <p className="text-xs uppercase tracking-wider text-secondary-800 font-bold mb-1">
@@ -59,8 +60,8 @@ export function Contact() {
               </div>
 
               <div className="flex items-center gap-5">
-                <div className="p-3.5 bg-primary-50 rounded-full text-primary-600">
-                  <Mail size={22} />
+                <div className="p-3.5 bg-background border border-border-light rounded-full text-primary-500 shadow-sm">
+                  <Mail size={20} />
                 </div>
                 <div>
                   <p className="text-xs uppercase tracking-wider text-secondary-800 font-bold mb-1">
@@ -73,8 +74,8 @@ export function Contact() {
               </div>
 
               <div className="flex items-center gap-5">
-                <div className="p-3.5 bg-primary-50 rounded-full text-primary-600">
-                  <Clock size={22} />
+                <div className="p-3.5 bg-background border border-border-light rounded-full text-primary-500 shadow-sm">
+                  <Clock size={20} />
                 </div>
                 <div>
                   <p className="text-xs uppercase tracking-wider text-secondary-800 font-bold mb-1">
@@ -101,7 +102,7 @@ export function Contact() {
             </div>
           </div>
 
-          <div className="flex flex-col md:block md:relative h-96 md:h-auto w-full overflow-hidden bg-primary-50">
+          <div className="flex flex-col md:block md:relative h-96 md:h-auto w-full overflow-hidden bg-background">
             <div className="h-full w-full md:absolute md:inset-0 z-0">
               <iframe
                 src={mapEmbedUrl}
@@ -116,8 +117,8 @@ export function Contact() {
 
             <div className="hidden md:block z-10 w-full md:w-80 md:absolute md:bottom-8 md:right-8 bg-surface/95 backdrop-blur-sm p-6 shadow-2xl border border-border-light rounded-xl">
               <div className="flex items-start gap-4 mb-6">
-                <div className="bg-primary-50 p-2.5 rounded-full">
-                  <MapPin className="text-primary-600 shrink-0" size={20} />
+                <div className="bg-background border border-border-light shadow-sm p-2.5 rounded-full">
+                  <MapPin className="text-primary-500 shrink-0" size={20} />
                 </div>
                 <div>
                   <h4 className="font-serif font-bold text-secondary-900 text-lg mb-1">

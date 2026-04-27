@@ -139,7 +139,8 @@ export function FAQ() {
   return (
     <section
       id="faq"
-      className="py-16 md:py-24 bg-primary-50/30"
+      /* Removido o bg-primary-50/30 para manter o off-white limpo e profissional */
+      className="py-16 md:py-24 bg-background"
       aria-labelledby="faq-heading"
     >
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
