@@ -64,7 +64,7 @@ function FAQAccordionItem({
       itemScope
       itemProp="mainEntity"
       itemType="https://schema.org/Question"
-      className="border-b border-stone-200 last:border-0"
+      className="border-b border-border-light last:border-0"
     >
       <dt>
         <button
@@ -72,15 +72,14 @@ function FAQAccordionItem({
           aria-expanded={isOpen}
           aria-controls={answerId}
           type="button"
-          // Correção UX: px-6 md:px-8 movido para o botão. ring-inset para o foco não cortar nas bordas.
-          className="w-full flex items-center justify-between gap-6 py-5 md:py-6 px-6 md:px-8 text-left group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-inset"
+          className="w-full flex items-center justify-between gap-6 py-5 md:py-6 px-6 md:px-8 text-left group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-inset"
         >
           <h3
             itemProp="name"
-            className={`font-medium text-base md:text-lg transition-colors duration-300 ${
+            className={`font-serif font-bold text-base md:text-lg transition-colors duration-300 ${
               isOpen
-                ? 'text-primary'
-                : 'text-stone-800 group-hover:text-primary'
+                ? 'text-primary-600'
+                : 'text-secondary-900 group-hover:text-primary-500'
             }`}
           >
             {item.question}
@@ -88,8 +87,8 @@ function FAQAccordionItem({
           <span
             className={`shrink-0 w-8 h-8 rounded-full border flex items-center justify-center transition-all duration-500 ease-out ${
               isOpen
-                ? 'bg-primary border-primary rotate-45 shadow-md'
-                : 'bg-white border-stone-200 group-hover:border-primary/40 group-hover:bg-stone-50'
+                ? 'bg-primary-500 border-primary-500 rotate-45 shadow-md'
+                : 'bg-white border-border-light group-hover:border-primary-500/40 group-hover:bg-primary-50'
             }`}
             aria-hidden="true"
           >
@@ -97,7 +96,7 @@ function FAQAccordionItem({
               className={`w-4 h-4 transition-colors duration-500 ${
                 isOpen
                   ? 'text-white'
-                  : 'text-stone-500 group-hover:text-primary'
+                  : 'text-secondary-800 group-hover:text-primary-600'
               }`}
             />
           </span>
@@ -119,8 +118,7 @@ function FAQAccordionItem({
           >
             <div
               itemProp="text"
-              // Correção UX: pl-6 md:pl-8 para alinhar com a pergunta. pr-14 md:pr-20 para o respiro do ícone.
-              className="pb-6 pl-6 md:pl-8 pr-14 md:pr-20 text-stone-600 font-light leading-relaxed text-base"
+              className="pb-6 pl-6 md:pl-8 pr-14 md:pr-20 text-text-secondary font-light leading-relaxed text-sm md:text-base"
             >
               {item.answer}
             </div>
@@ -141,7 +139,7 @@ export function FAQ() {
   return (
     <section
       id="faq"
-      className="py-16 md:py-24 bg-white"
+      className="py-16 md:py-24 bg-primary-50/30"
       aria-labelledby="faq-heading"
     >
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -150,25 +148,26 @@ export function FAQ() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-80px' }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="text-center mb-12"
+          className="text-center mb-10"
         >
-          <p className="text-xs md:text-sm font-bold text-stone-400 uppercase tracking-[0.2em] mb-3">
+          <p className="text-xs md:text-sm font-bold text-secondary-800 uppercase tracking-[0.2em] mb-3">
             Dúvidas Frequentes
           </p>
           <h2
             id="faq-heading"
-            className="font-serif text-3xl md:text-4xl text-stone-800"
+            className="font-serif text-3xl md:text-4xl text-secondary-900"
           >
             Perguntas sobre{' '}
-            <span className="italic text-primary">reforma de estofados</span>
+            <span className="italic text-primary-500">
+              reforma de estofados
+            </span>
           </h2>
         </motion.div>
 
         <dl
           itemScope
           itemType="https://schema.org/FAQPage"
-          // Correção UX: Tiramos o padding lateral daqui e adicionamos overflow-hidden para conter os botões
-          className="bg-stone-50 rounded-2xl border border-stone-100 shadow-sm overflow-hidden"
+          className="bg-surface rounded-2xl border border-border-light shadow-card overflow-hidden"
         >
           {FAQ_ITEMS.map((item, index) => (
             <FAQAccordionItem
@@ -186,14 +185,14 @@ export function FAQ() {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8, delay: 0.3 }}
-          className="text-center text-stone-500 text-sm mt-10"
+          className="text-center text-text-secondary text-sm mt-10"
         >
           Ainda tem dúvidas?{' '}
           <a
             href="https://wa.me/5534997659558"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-primary font-semibold underline underline-offset-4 hover:text-primary-dark transition-colors"
+            className="text-primary-600 font-semibold underline underline-offset-4 hover:text-primary-500 transition-colors"
           >
             Fale conosco pelo WhatsApp
           </a>{' '}

@@ -1,34 +1,54 @@
 @import 'tailwindcss';
 
 @theme {
-  /* Cores Customizadas para a Estofados Piaba */
-  --color-primary: #292524;
-  --color-secondary: #78716c;
-  --color-accent: #d6d3d1;
-  --color-background: #fafaf9;
-  --color-surface: #ffffff;
+  /* Cores Customizadas para a Estofados Piaba - Design Premium */
+  --color-primary-50: #EAF6F6;
+  --color-primary-500: #2BA09E;
+  --color-primary-600: #22807E;
+
+  /* Ajustado para tons bem mais escuros (Midnight Blue) */
+  --color-secondary-800: #114256;
+  --color-secondary-900: #0C2B3A;
+  --color-secondary-950: #061822;
+
+  /* NOVA COR: Acento Caramelo / Couro (Traz calor e contraste) */
+  --color-accent-50: #FCF9F6;
+  --color-accent-500: #C89F73;
+  --color-accent-600: #AE8357;
+
+  /* Aliases */
+  --color-primary: #0C2B3A;
+  --color-secondary: #2BA09E;
+
+  /* Bases ligeiramente aquecidas (Pérola/Off-white) em vez de cinza/branco frio */
+  --color-background: #FCFBF9;
+  --color-surface: #FFFFFF;
+  --color-border-light: #F2EFEA;
 
   /* Fontes */
-  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
-  --font-serif: 'Playfair Display', serif;
+  --font-sans: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-serif), ui-serif, Georgia, serif;
 
-  /* Bordas e Inputs (mantendo a estrutura do seu projeto) */
-  --color-border: #e2e8f0;
-  --color-input: #e2e8f0;
+  /* Sombras Premium */
+  --shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
 }
 
 @layer base {
   body {
-    @apply bg-background text-primary font-sans antialiased;
+    @apply bg-background text-primary font-sans antialiased selection:bg-accent-500 selection:text-white;
   }
 
-  button{
-    @apply cursor-pointer transition-colors duration-300 focus:ring-2 focus:ring-primary focus:ring-offset-2 active:scale-95;
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-serif text-secondary-900 tracking-tight;
+  }
+
+  button {
+    @apply cursor-pointer transition-colors duration-300 focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 active:scale-95;
     transition: box-shadow 0.3s, transform 0.2s;
   }
 
   a {
-    @apply transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2;
+    @apply transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2;
   }
 
   .card {
@@ -60,16 +80,15 @@
 
   /* Scrollbar customizada */
   ::-webkit-scrollbar {
-    width: 5px;
+    width: 6px;
   }
   ::-webkit-scrollbar-track {
-    @apply bg-transparent;
+    @apply bg-background;
   }
   ::-webkit-scrollbar-thumb {
-    @apply rounded-full bg-stone-300;
+    @apply rounded-full bg-accent-500/40 hover:bg-accent-500/70;
   }
 
-  /* Utility para esconder scrollbar */
   .no-scrollbar {
     -ms-overflow-style: none;
     scrollbar-width: none;

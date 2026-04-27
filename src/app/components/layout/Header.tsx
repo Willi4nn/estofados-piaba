@@ -3,6 +3,7 @@ import { Menu, X } from 'lucide-react';
 import Image from 'next/image';
 import { useEffect, useState, type MouseEvent } from 'react';
 import { cn } from '../../lib/utils';
+import { Button } from '../ui/Button';
 
 export function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -22,7 +23,6 @@ export function Header() {
     } else {
       document.body.style.overflow = '';
     }
-    // Cleanup de segurança caso o componente seja desmontado
     return () => {
       document.body.style.overflow = '';
     };
@@ -49,25 +49,21 @@ export function Header() {
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isMobileMenuOpen || isScrolled
-          ? 'bg-white/80 backdrop-blur-lg shadow-lg py-4'
+          ? 'bg-surface/95 backdrop-blur-lg shadow-sm border-b border-border-light py-4'
           : 'bg-transparent py-6'
       }`}
       style={{
         WebkitBackdropFilter: 'blur(16px)',
         backdropFilter: 'blur(16px)',
-        boxShadow:
-          isMobileMenuOpen || isScrolled
-            ? '0 4px 24px rgba(0,0,0,0.08)'
-            : 'none',
       }}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center">
-          {/* Logo - Clicar no logo leva ao topo */}
           <a
             href="#hero"
             onClick={(e) => handleNavClick(e, '#hero')}
-            className="flex items-center gap-2 group cursor-pointer"
+            className="flex items-center gap-3 group cursor-pointer"
+            aria-label="Estofados Piaba - Início"
           >
             {isMobileMenuOpen || isScrolled ? (
               <Image
@@ -90,52 +86,66 @@ export function Header() {
                 priority
               />
             )}
+
             <span
               className={`font-serif text-2xl font-bold tracking-wide ${
-                isMobileMenuOpen || isScrolled ? 'text-primary' : 'text-white'
+                isMobileMenuOpen || isScrolled ? 'text-black' : 'text-white'
               }`}
             >
               ESTOFADOS PIABA
             </span>
           </a>
 
-          {/* Desktop Nav */}
-          <nav className="hidden md:flex gap-10">
+          <nav className="hidden md:flex items-center gap-8">
             {navLinks.map((link) => (
               <a
                 key={link.name}
                 href={link.href}
                 onClick={(e) => handleNavClick(e, link.href)}
                 className={cn(
-                  'relative text-[12px] uppercase tracking-[0.2em] font-semibold transition-colors duration-300 py-2 group',
+                  'relative text-[13px] uppercase tracking-[0.1em] font-medium transition-colors duration-300 py-2 group font-sans',
                   isScrolled
-                    ? 'text-stone-600 hover:text-primary'
+                    ? 'text-secondary-800 hover:text-primary-600'
                     : 'text-white/80 hover:text-white'
                 )}
               >
                 {link.name}
                 <span
                   className={cn(
-                    'absolute bottom-0 left-0 w-0 h-px transition-all duration-500 group-hover:w-full',
-                    isScrolled ? 'bg-primary' : 'bg-white'
+                    'absolute bottom-0 left-0 w-0 h-[2px] rounded-full transition-all duration-500 group-hover:w-full',
+                    isScrolled ? 'bg-primary-500' : 'bg-white'
                   )}
                 />
               </a>
             ))}
+
+            <div className="ml-2">
+              <Button
+                href="#contact"
+                variant={isScrolled ? 'primary' : 'outline'}
+                className={
+                  !isScrolled
+                    ? 'border-white text-white hover:bg-white hover:text-secondary-900 px-6 py-2 h-10'
+                    : 'px-6 py-2 h-10'
+                }
+              >
+                Fazer Orçamento
+              </Button>
+            </div>
           </nav>
 
           <button
-            className="md:hidden p-2 focus:outline-none cursor-pointer hover:scale-105 transition-transform"
+            className="md:hidden p-2 focus:outline-none cursor-pointer hover:scale-105 transition-transform rounded-md"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            aria-label="Menu"
+            aria-label={isMobileMenuOpen ? 'Fechar menu' : 'Abrir menu'}
           >
             {isMobileMenuOpen ? (
-              <X className="text-primary w-6 h-6" strokeWidth={1.5} />
+              <X className="text-secondary-900 w-6 h-6" strokeWidth={1.5} />
             ) : (
               <Menu
                 className={cn(
                   'w-6 h-6',
-                  !isScrolled ? 'text-white' : 'text-primary'
+                  !isScrolled ? 'text-white' : 'text-secondary-900'
                 )}
                 strokeWidth={1.5}
               />
@@ -144,20 +154,30 @@ export function Header() {
         </div>
       </div>
 
-      {/* Mobile Nav */}
       {isMobileMenuOpen && (
-        <div className="md:hidden absolute top-full left-0 right-0 bg-white border-t border-stone-100 shadow-lg h-screen md:h-auto">
-          <div className="flex flex-col p-6 gap-6">
+        <div className="md:hidden absolute top-full left-0 right-0 bg-surface border-t border-border-light shadow-xl h-[calc(100vh-72px)] overflow-y-auto">
+          <div className="flex flex-col px-6 py-8 gap-4">
             {navLinks.map((link) => (
               <a
                 key={link.name}
                 href={link.href}
-                className="text-primary text-xl font-serif font-medium py-3 border-b border-stone-100 last:border-0 hover:text-stone-500 transition-colors"
+                className="text-secondary-900 text-2xl font-serif font-medium py-4 border-b border-border-light last:border-0 hover:text-primary-500 transition-colors"
                 onClick={(e) => handleNavClick(e, link.href)}
               >
                 {link.name}
               </a>
             ))}
+
+            <div className="mt-8">
+              <Button
+                href="#contact"
+                fullWidth
+                variant="primary"
+                className="py-4"
+              >
+                Solicitar Orçamento Agora
+              </Button>
+            </div>
           </div>
         </div>
       )}

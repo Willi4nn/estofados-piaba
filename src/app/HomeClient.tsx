@@ -18,7 +18,6 @@ import { Services } from './components/sections/Services';
 
 // ─── Preloader ────────────────────────────────────────────────────────────────
 // IMPORTANTE: Não usar <h1> aqui — a página já tem um H1 no Hero.
-// Usar <h1> no preloader E no Hero criaria dois H1, penalizando o SEO.
 export function Preloader({ onComplete }: { onComplete: () => void }) {
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -32,8 +31,8 @@ export function Preloader({ onComplete }: { onComplete: () => void }) {
       initial={{ opacity: 1 }}
       exit={{ opacity: 0, y: '-100%' }}
       transition={{ duration: 0.6, ease: [0.76, 0, 0.24, 1] }}
-      className="fixed inset-0 z-100 bg-stone-950 flex items-center justify-center overflow-hidden"
-      aria-hidden="true" // Oculto para leitores de tela — conteúdo decorativo
+      className="fixed inset-0 z-[100] bg-secondary-950 flex items-center justify-center overflow-hidden"
+      aria-hidden="true"
     >
       <div className="relative flex flex-col items-center">
         <motion.div
@@ -48,11 +47,10 @@ export function Preloader({ onComplete }: { onComplete: () => void }) {
             transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
             className="flex flex-col items-center"
           >
-            {/* Usando <p> e <span> em vez de <h1> para evitar dois H1 na página */}
-            <p className="relative z-10 font-serif text-[1.26rem] md:text-[2.26rem] text-stone-100 tracking-[0.4em] md:tracking-[0.6em] uppercase ml-[0.4em] md:ml-[0.7em]">
+            <p className="relative z-10 font-serif text-[1.26rem] md:text-[2.26rem] text-primary-50 tracking-[0.4em] md:tracking-[0.6em] uppercase ml-[0.4em] md:ml-[0.7em]">
               Estofados
             </p>
-            <span className="font-serif text-6xl md:text-[8rem] font-bold text-stone-100 uppercase -mt-2 md:-mt-6">
+            <span className="font-serif text-6xl md:text-[8rem] font-bold text-primary-50 uppercase -mt-2 md:-mt-6">
               Piaba
             </span>
           </motion.div>
@@ -62,14 +60,14 @@ export function Preloader({ onComplete }: { onComplete: () => void }) {
           initial={{ width: 0, opacity: 0 }}
           animate={{ width: '100%', opacity: 1 }}
           transition={{ duration: 0.5, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-          className="h-px bg-stone-500 mt-2 md:mt-4"
+          className="h-px bg-primary-500 mt-2 md:mt-4"
         />
 
         <motion.span
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-          className="text-sm md:text-base uppercase tracking-[0.3em] text-stone-400 mt-6"
+          className="text-sm md:text-base font-sans uppercase tracking-[0.3em] text-primary-50/80 mt-6"
         >
           Desde 1979
         </motion.span>
@@ -92,7 +90,7 @@ export function HomeClient() {
         {isLoading && <Preloader onComplete={() => setIsLoading(false)} />}
       </AnimatePresence>
 
-      <div className="min-h-screen flex flex-col font-sans text-primary bg-stone-50">
+      <div className="min-h-screen flex flex-col font-sans text-primary bg-background">
         <Header />
         <main className="grow">
           <Hero />
@@ -100,7 +98,6 @@ export function HomeClient() {
           <About />
           <Portfolio />
           <Materials />
-          {/* FAQ gera rich snippets do tipo "Perguntas frequentes" no Google */}
           <FAQ />
           <Contact />
         </main>

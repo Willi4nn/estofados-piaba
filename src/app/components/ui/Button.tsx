@@ -6,7 +6,7 @@ import type {
 } from 'react';
 
 type BaseProps = {
-  variant?: 'primary' | 'outline' | 'ghost' | 'white' | 'green';
+  variant?: 'primary' | 'outline' | 'ghost' | 'white' | 'green' | 'secondary';
   fullWidth?: boolean;
   children: ReactNode;
   className?: string;
@@ -32,18 +32,21 @@ export function Button({
   ...props
 }: LinkProps | ButtonProps) {
   const baseStyles =
-    'inline-flex items-center justify-center px-8 py-3 text-sm font-medium transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-stone-400 focus:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none cursor-pointer rounded-md';
+    'inline-flex items-center justify-center px-8 py-3 text-sm font-medium transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none cursor-pointer rounded-lg';
 
   const variants = {
     primary:
-      'bg-primary text-white hover:bg-stone-700 shadow-sm hover:shadow-md border border-transparent',
+      'bg-primary-500 text-white hover:bg-primary-600 shadow-md border border-transparent',
+    secondary:
+      'border-2 border-secondary-900 text-secondary-900 bg-transparent hover:bg-secondary-900 hover:text-white',
     green:
-      'bg-green-500 text-white hover:bg-green-600 shadow-sm hover:shadow-md border border-transparent',
+      'bg-[#25D366] text-white hover:bg-[#20bd5a] shadow-sm hover:shadow-md border border-transparent',
     outline:
-      'border border-primary text-primary hover:bg-primary hover:text-white',
-    ghost: 'text-primary hover:bg-stone-100 border border-transparent',
+      'border border-primary-500 text-primary-500 hover:bg-primary-500 hover:text-white',
+    ghost:
+      'text-text-secondary hover:bg-primary-50 hover:text-primary-600 border border-transparent',
     white:
-      'bg-white text-primary hover:bg-stone-100 border border-transparent shadow-sm hover:shadow-md',
+      'bg-white text-secondary-900 hover:bg-primary-50 border border-transparent shadow-sm hover:shadow-md',
   };
 
   const widthStyles = fullWidth ? 'w-full' : '';
