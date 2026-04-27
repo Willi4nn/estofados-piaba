@@ -1,50 +1,69 @@
 @import 'tailwindcss';
 
 @theme {
-  /* Cores Customizadas para a Estofados Piaba - Design Premium */
-  --color-primary-50: #EAF6F6;
-  --color-primary-500: #2BA09E;
-  --color-primary-600: #22807E;
+  /* ========================================================
+     1. TONS NEUTROS (O Segredo do Minimalismo Premium)
+     ======================================================== */
+  /* Substituímos o branco frio por um tom de "Linho Cru" ou "Algodão" */
+  --color-background: #fdfcf9;
+  /* Branco puro apenas para cartões ou overlays */
+  --color-surface: #ffffff;
+  /* Bordas muito sutis (um cinza quente claro) */
+  --color-border-light: #ebe8e3;
 
-  /* Ajustado para tons bem mais escuros (Midnight Blue) */
-  --color-secondary-800: #114256;
-  --color-secondary-900: #0C2B3A;
-  --color-secondary-950: #061822;
+  /* ========================================================
+     2. TIPOGRAFIA & CONTRASTE (A "Alma" Elegante)
+     ======================================================== */
+  /* Para parágrafos longos (Um cinza que puxa pro marrom/quente) */
+  --color-text-secondary: #5c5a56;
+  /* O seu Azul-Marinho profundo, mas agora reservado apenas para textos e títulos */
+  --color-secondary-900: #0c1e29;
+  /* Um "Quase Preto" super profundo para o Footer (Substitui o excesso de azul) */
+  --color-secondary-950: #081116;
 
-  /* NOVA COR: Acento Caramelo / Couro (Traz calor e contraste) */
-  --color-accent-50: #FCF9F6;
-  --color-accent-500: #C89F73;
-  --color-accent-600: #AE8357;
+  /* ========================================================
+     3. COR DE DESTAQUE (Turquesa - Apenas para Interação)
+     ======================================================== */
+  /* O Turquesa original do logo, usado SOMENTE em Botões, Ícones ativos e Links */
+  --color-primary-500: #299f9d;
+  /* Versão hover e detalhes */
+  --color-primary-600: #1d7a79;
+  /* Fundo de hover super leve */
+  --color-primary-50: #eef8f8;
 
-  /* Aliases */
-  --color-primary: #0C2B3A;
-  --color-secondary: #2BA09E;
+  /* Aliases Semânticos */
+  --color-primary: #0c1e29; /* Textos primários */
+  --color-secondary: #299f9d; /* Destaques */
 
-  /* Bases ligeiramente aquecidas (Pérola/Off-white) em vez de cinza/branco frio */
-  --color-background: #FCFBF9;
-  --color-surface: #FFFFFF;
-  --color-border-light: #F2EFEA;
-
-  /* Fontes */
+  /* Fontes (Mantenha as suas) */
   --font-sans: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
   --font-serif: var(--font-serif), ui-serif, Georgia, serif;
 
-  /* Sombras Premium */
-  --shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+  /* Sombras (Mantenha as suas) */
+  --shadow-card:
+    0 10px 40px -10px rgba(0, 0, 0, 0.04), 0 1px 3px rgba(0, 0, 0, 0.02); /* Sombra atualizada: maior difusão (blur), menor opacidade. Super premium. */
 }
 
 @layer base {
   body {
-    @apply bg-background text-primary font-sans antialiased selection:bg-accent-500 selection:text-white;
+    /* Fundo Off-White, texto primário em Azul Petróleo */
+    @apply bg-background text-secondary-900 font-sans antialiased selection:bg-primary-500 selection:text-white;
   }
 
-  h1, h2, h3, h4, h5, h6 {
-    @apply font-serif text-secondary-900 tracking-tight;
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-serif tracking-tight text-secondary-900;
   }
 
   button {
     @apply cursor-pointer transition-colors duration-300 focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 active:scale-95;
-    transition: box-shadow 0.3s, transform 0.2s;
+    transition:
+      box-shadow 0.3s,
+      transform 0.2s;
   }
 
   a {
@@ -55,30 +74,46 @@
     @apply shadow-sm hover:shadow-xl transition-shadow duration-300;
   }
 
+  /* Animações (Mantidas as suas) */
   .animate-fade-in {
     animation: fadeIn 0.8s ease;
   }
   .animate-slide-up {
-    animation: slideUp 0.8s cubic-bezier(0.4,0,0.2,1);
+    animation: slideUp 0.8s cubic-bezier(0.4, 0, 0.2, 1);
   }
   .animate-bounce {
     animation: bounce 1s infinite;
   }
 
   @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
   }
   @keyframes slideUp {
-    from { transform: translateY(40px); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
+    from {
+      transform: translateY(40px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
   }
   @keyframes bounce {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-8px); }
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-8px);
+    }
   }
 
-  /* Scrollbar customizada */
+  /* Scrollbar customizada (Refinada para o Petróleo) */
   ::-webkit-scrollbar {
     width: 6px;
   }
@@ -86,7 +121,7 @@
     @apply bg-background;
   }
   ::-webkit-scrollbar-thumb {
-    @apply rounded-full bg-accent-500/40 hover:bg-accent-500/70;
+    @apply rounded-full bg-secondary-900/30 hover:bg-secondary-900/50;
   }
 
   .no-scrollbar {

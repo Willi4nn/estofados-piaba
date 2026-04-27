@@ -59,7 +59,7 @@ export function Hero() {
           className="font-serif text-5xl md:text-7xl lg:text-[6rem] font-light mb-6 md:mb-8 leading-[1.1] tracking-tight text-balance text-white"
         >
           Reforma de Estofados <br />
-          <span className="italic text-secondary">em Patos de Minas</span>
+          <span className="italic text-primary-600">em Patos de Minas</span>
         </motion.h1>
 
         <motion.p

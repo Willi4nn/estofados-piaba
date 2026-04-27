@@ -6,7 +6,6 @@ import { MATERIALS } from '../../constants';
 
 export function Materials() {
   return (
-    // Fundo alterado para bg-secondary-950
     <section className="py-16 md:py-24 bg-secondary-950 text-white relative overflow-hidden">
       <div className="absolute inset-0 pointer-events-none opacity-20 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-primary-500/20 via-transparent to-transparent" />
 

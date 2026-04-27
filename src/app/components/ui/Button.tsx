@@ -4,6 +4,7 @@ import type {
   ButtonHTMLAttributes,
   ReactNode,
 } from 'react';
+import { cn } from '../../lib/utils';
 
 type BaseProps = {
   variant?: 'primary' | 'outline' | 'ghost' | 'white' | 'green' | 'secondary';
@@ -12,13 +13,11 @@ type BaseProps = {
   className?: string;
 };
 
-// Se tiver href, é um link (anchor)
 type LinkProps = BaseProps &
   AnchorHTMLAttributes<HTMLAnchorElement> & {
     href: string;
   };
 
-// Se não tiver href, é um botão
 type ButtonProps = BaseProps &
   ButtonHTMLAttributes<HTMLButtonElement> & {
     href?: undefined;
@@ -50,9 +49,13 @@ export function Button({
   };
 
   const widthStyles = fullWidth ? 'w-full' : '';
-  const combinedClassName = `${baseStyles} ${variants[variant]} ${widthStyles} ${className}`;
+  const combinedClassName = cn(
+    baseStyles,
+    variants[variant],
+    widthStyles,
+    className
+  );
 
-  // Helper to handle smooth scroll if it's an anchor link to an ID
   const handleScroll = (e: React.MouseEvent<HTMLAnchorElement>) => {
     const href = (props as LinkProps).href;
     if (href && href.startsWith('#')) {

@@ -45,7 +45,7 @@ export function Contact() {
 
             <div className="space-y-6 md:space-y-8">
               <div className="flex items-center gap-5">
-                <div className="p-3.5 bg-primary-50 rounded-full text-primary-500">
+                <div className="p-3.5 bg-primary-50 rounded-full text-primary-600">
                   <Phone size={22} />
                 </div>
                 <div>
@@ -59,7 +59,7 @@ export function Contact() {
               </div>
 
               <div className="flex items-center gap-5">
-                <div className="p-3.5 bg-primary-50 rounded-full text-primary-500">
+                <div className="p-3.5 bg-primary-50 rounded-full text-primary-600">
                   <Mail size={22} />
                 </div>
                 <div>
@@ -73,7 +73,7 @@ export function Contact() {
               </div>
 
               <div className="flex items-center gap-5">
-                <div className="p-3.5 bg-primary-50 rounded-full text-primary-500">
+                <div className="p-3.5 bg-primary-50 rounded-full text-primary-600">
                   <Clock size={22} />
                 </div>
                 <div>
@@ -117,7 +117,7 @@ export function Contact() {
             <div className="hidden md:block z-10 w-full md:w-80 md:absolute md:bottom-8 md:right-8 bg-surface/95 backdrop-blur-sm p-6 shadow-2xl border border-border-light rounded-xl">
               <div className="flex items-start gap-4 mb-6">
                 <div className="bg-primary-50 p-2.5 rounded-full">
-                  <MapPin className="text-primary-500 shrink-0" size={20} />
+                  <MapPin className="text-primary-600 shrink-0" size={20} />
                 </div>
                 <div>
                   <h4 className="font-serif font-bold text-secondary-900 text-lg mb-1">
@@ -149,7 +149,7 @@ export function Contact() {
         href={`https://wa.me/${WHATSAPP_NUMBER}`}
         target="_blank"
         rel="noopener noreferrer"
-        aria-label="Fale connosco pelo WhatsApp"
+        aria-label="Fale conosco pelo WhatsApp"
         className="fixed bottom-6 right-6 z-[60] bg-[#25D366] text-white p-4 rounded-full shadow-lg shadow-[#25D366]/30 hover:bg-[#20bd5a] transition-all duration-300 hover:scale-110 flex items-center group overflow-hidden"
       >
         <FaWhatsapp size={28} className="text-white shrink-0" />
