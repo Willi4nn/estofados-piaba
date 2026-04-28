@@ -36,16 +36,15 @@ export function Contact() {
               Contato
             </h2>
             <h3 className="font-serif text-3xl md:text-4xl text-secondary-900 mb-4 md:mb-6">
-              Visite nossa oficina e conheça nossos serviços de perto
+              Visite a nossa oficina e conheça os serviços de perto
             </h3>
             <p className="text-text-secondary mb-8 md:mb-10 font-light text-sm md:text-base max-w-md leading-relaxed">
-              Estamos prontos para receber você e transformar seu projeto em
-              realidade. Venha conhecer nossos tecidos e acabamentos.
+              Estamos prontos para o receber e transformar o seu projeto em
+              realidade. Venha conhecer os nossos tecidos e acabamentos.
             </p>
 
             <div className="space-y-6 md:space-y-8">
               <div className="flex items-center gap-5">
-                {/* Fundo do ícone ajustado para algo neutro/premium em vez de azul bebê */}
                 <div className="p-3.5 bg-background border border-border-light rounded-full text-primary-500 shadow-sm">
                   <Phone size={20} />
                 </div>
@@ -146,12 +145,13 @@ export function Contact() {
         </div>
       </div>
 
+      {/* Z-index corrigido para 40 para não sobrepor o Header/Menu (50) nem o Lightbox (100) */}
       <a
         href={`https://wa.me/${WHATSAPP_NUMBER}`}
         target="_blank"
         rel="noopener noreferrer"
-        aria-label="Fale conosco pelo WhatsApp"
-        className="fixed bottom-6 right-6 z-[60] bg-[#25D366] text-white p-4 rounded-full shadow-lg shadow-[#25D366]/30 hover:bg-[#20bd5a] transition-all duration-300 hover:scale-110 flex items-center group overflow-hidden"
+        aria-label="Fale connosco pelo WhatsApp"
+        className="fixed bottom-6 right-6 z-40 bg-[#25D366] text-white p-4 rounded-full shadow-lg shadow-[#25D366]/30 hover:bg-[#20bd5a] transition-all duration-300 hover:scale-110 flex items-center group overflow-hidden"
       >
         <FaWhatsapp size={28} className="text-white shrink-0" />
         <span className="max-w-0 opacity-0 md:group-hover:max-w-xs md:group-hover:opacity-100 md:group-hover:ml-3 transition-all duration-500 ease-in-out whitespace-nowrap font-medium hidden md:inline-block">

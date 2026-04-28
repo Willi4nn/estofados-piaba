@@ -5,10 +5,7 @@ import { Check } from 'lucide-react';
 
 export function About() {
   return (
-    <section
-      id="about"
-      className="py-24 md:py-32 bg-primary-50/30 overflow-hidden"
-    >
+    <section id="about" className="py-24 md:py-32 bg-surface overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col lg:flex-row items-center gap-16 lg:gap-24">
           <motion.div
@@ -23,13 +20,14 @@ export function About() {
                 whileHover={{ scale: 1.05 }}
                 transition={{ duration: 1.5, ease: 'easeOut' }}
                 src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?q=80&w=1200&auto=format&fit=crop"
-                alt="Oficina de tapeçaria de luxo"
+                alt="Oficina de tapeçaria de luxo Estofados Piaba"
                 className="w-full h-full object-cover"
               />
               <div className="absolute inset-0 border border-black/5 pointer-events-none rounded-2xl" />
             </div>
+            {/* Elemento decorativo agora usa um tom neutro para manter a sofisticação */}
             <div
-              className="absolute -top-6 -left-6 md:-top-10 md:-left-10 w-full h-full border-2 border-primary-500/30 rounded-2xl z-0 hidden md:block"
+              className="absolute -top-6 -left-6 md:-top-10 md:-left-10 w-full h-full border-2 border-border-light rounded-2xl z-0 hidden md:block"
               aria-hidden="true"
             />
           </motion.div>
@@ -54,13 +52,13 @@ export function About() {
             <div className="space-y-6 text-text-secondary font-light text-base md:text-lg leading-relaxed mb-10 text-pretty">
               <p>
                 Na Estofados Piaba, acreditamos que cada móvel carrega uma alma
-                e uma história. Há mais de quatro décadas, dedicamos nossas mãos
-                para preservar memórias e elevar o conforto do seu lar.
+                e uma história. Há mais de quatro décadas, dedicamos as nossas
+                mãos para preservar memórias e elevar o conforto do seu lar.
               </p>
               <p>
-                Nosso ateliê é um santuário onde técnicas artesanais passadas de
-                geração em geração se encontram com os materiais mais nobres e
-                inovadores do mercado mundial. O resultado é uma tapeçaria de
+                O nosso ateliê é um santuário onde técnicas artesanais passadas
+                de geração em geração se encontram com os materiais mais nobres
+                e inovadores do mercado mundial. O resultado é uma tapeçaria de
                 excelência, feita para durar uma vida inteira.
               </p>
             </div>

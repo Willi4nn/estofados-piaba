@@ -30,22 +30,23 @@ export function Button({
   className = '',
   ...props
 }: LinkProps | ButtonProps) {
+  // Ajuste do ring-offset para acessibilidade superior
   const baseStyles =
-    'inline-flex items-center justify-center px-8 py-3 text-sm font-medium transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none cursor-pointer rounded-lg';
+    'inline-flex items-center justify-center px-8 py-3 text-sm font-medium transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:opacity-50 disabled:pointer-events-none cursor-pointer rounded-lg';
 
   const variants = {
     primary:
-      'bg-primary-500 text-white hover:bg-primary-600 shadow-md border border-transparent',
+      'bg-primary-500 text-white hover:bg-primary-600 shadow-md hover:shadow-lg border border-transparent',
     secondary:
       'border-2 border-secondary-900 text-secondary-900 bg-transparent hover:bg-secondary-900 hover:text-white',
     green:
       'bg-[#25D366] text-white hover:bg-[#20bd5a] shadow-sm hover:shadow-md border border-transparent',
     outline:
-      'border border-primary-500 text-primary-500 hover:bg-primary-500 hover:text-white',
+      'border-2 border-primary-500 text-primary-500 hover:bg-primary-500 hover:text-white',
     ghost:
       'text-text-secondary hover:bg-primary-50 hover:text-primary-600 border border-transparent',
     white:
-      'bg-white text-secondary-900 hover:bg-primary-50 border border-transparent shadow-sm hover:shadow-md',
+      'bg-white text-secondary-950 hover:bg-primary-50 border border-transparent shadow-md hover:shadow-lg',
   };
 
   const widthStyles = fullWidth ? 'w-full' : '';
