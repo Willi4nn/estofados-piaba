@@ -124,8 +124,7 @@ export function Footer() {
             <p>© {new Date().getFullYear()} Estofados Piaba.</p>
             <p>Todos os direitos reservados.</p>
             <p className="flex items-center gap-2">
-              Feito com <span className="text-primary-500">♥</span> em Patos de
-              Minas
+              Desenvolvido por Willian Pereira
             </p>
           </div>
         </motion.div>
