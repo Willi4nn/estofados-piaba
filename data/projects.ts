@@ -17,6 +17,18 @@ type RawProjectInternal = Omit<RawProject, 'date'> & { date: string };
 const raw: Record<string, RawProjectInternal[]> = {
   Sofas: [
     {
+      images: ['/moveis/sofas/20260515_153923.jpg'],
+      date: '2026-05-15',
+    },
+    {
+      images: [
+        '/moveis/sofas/20260327_113952.jpg',
+        '/moveis/sofas/20260327_113859.jpg',
+        '/moveis/sofas/20260327_114801.jpg',
+      ],
+      date: '2026-03-27',
+    },
+    {
       images: ['/moveis/sofas/IMG-20260303-WA0001.jpg'],
       date: '2026-03-03',
     },
@@ -124,6 +136,10 @@ const raw: Record<string, RawProjectInternal[]> = {
   ],
 
   Poltronas: [
+    {
+      images: ['/moveis/poltronas/20260519_135803.jpg'],
+      date: '2026-05-19',
+    },
     {
       images: ['/moveis/poltronas/20260316_103524.jpg'],
       date: '2026-03-16',
