@@ -21,6 +21,10 @@ const raw: Record<string, RawProjectInternal[]> = {
       date: '2026-05-15',
     },
     {
+      images: ['/moveis/sofas/20260409_093627.jpg'],
+      date: '2026-04-09',
+    },
+    {
       images: [
         '/moveis/sofas/20260327_113952.jpg',
         '/moveis/sofas/20260327_113859.jpg',
@@ -234,6 +238,10 @@ const raw: Record<string, RawProjectInternal[]> = {
 
   Cadeiras: [
     {
+      images: ['/moveis/cadeiras/20260519_140420.jpg'],
+      date: '2026-05-19',
+    },
+    {
       images: [
         '/moveis/cadeiras/46ed56d9-0023-478b-9d5a-7a5d4075716a.jpg',
         '/moveis/cadeiras/IMG_4255.JPEG',
@@ -320,6 +328,10 @@ const raw: Record<string, RawProjectInternal[]> = {
   ],
 
   Cabeceiras: [
+    {
+      images: ['/moveis/cabeceiras/20260426_111252.jpg'],
+      date: '2026-04-26',
+    },
     {
       images: [
         '/moveis/cabeceiras/IMG-20240806-WA0002.jpg',
