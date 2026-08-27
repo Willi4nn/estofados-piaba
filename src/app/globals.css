@@ -20,6 +20,7 @@
   /* ========================================================
      3. COR DE DESTAQUE (Turquesa - Apenas para Interação)
      ======================================================== */
+
   --color-primary-50: #eef8f8;
   --color-primary-500: #299f9d;
   --color-primary-600: #1d7a79;
@@ -27,6 +28,10 @@
   /* Aliases Semânticos */
   --color-primary: #0c1e29;
   --color-secondary: #299f9d;
+
+  /* Novas Cores Semânticas (Marcas) */
+  --color-whatsapp: #25D366;
+  --color-whatsapp-hover: #20bd5a;
 
   /* ========================================================
      4. FONTES E SOMBRAS
@@ -91,6 +96,10 @@
   h5,
   h6 {
     @apply font-serif tracking-tight text-secondary-900;
+  }
+
+  button {
+    @apply cursor-pointer;
   }
 
   /* Scrollbar customizada (Webkit - Chrome/Edge/Safari) */

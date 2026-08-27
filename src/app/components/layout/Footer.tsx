@@ -44,7 +44,7 @@ export function Footer() {
   return (
     // Fundo alterado para bg-secondary-950
     <footer className="bg-secondary-950 text-white pt-20 pb-6 overflow-hidden relative">
-      <div className="absolute inset-0 pointer-events-none opacity-20 bg-[radial-gradient(ellipse_at_bottom_left,_var(--tw-gradient-stops))] from-primary-500/30 via-transparent to-transparent" />
+      <div className="absolute inset-0 pointer-events-none opacity-20 bg-[radial-gradient(ellipse_at_bottom_left,var(--tw-gradient-stops))] from-primary-500/30 via-transparent to-transparent" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-8 gap-16 md:gap-8 mb-12">
@@ -59,7 +59,8 @@ export function Footer() {
             </p>
             <button
               onClick={scrollToTop}
-              className="group flex items-center gap-3 text-xs uppercase tracking-[0.2em] font-medium text-primary-500 hover:text-primary-50 transition-colors duration-300 cursor-pointer"
+              aria-label="Voltar ao topo da página"
+              className="group flex items-center gap-3 text-xs uppercase tracking-[0.2em] font-medium text-primary-500 hover:text-primary-50 transition-colors duration-300 cursor-pointer rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 focus-visible:ring-offset-secondary-950 p-1 -ml-1"
             >
               Voltar ao Topo
               <span className="p-2 rounded-full bg-white/10 group-hover:bg-primary-500 transition-colors duration-300">

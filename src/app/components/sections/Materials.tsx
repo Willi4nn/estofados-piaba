@@ -43,7 +43,7 @@ export function Materials() {
               className="group flex flex-col items-center"
             >
               <div className="relative w-24 h-28 lg:w-28 lg:h-32 mb-3 lg:mb-4">
-                <div className="relative w-full h-full rounded-xl overflow-hidden shadow-lg ring-1 ring-white/10 group-hover:ring-primary-500/50 group-hover:shadow-primary-500/20 transition-all duration-500 group-hover:-translate-y-1">
+                <div className="relative w-full h-full rounded-md overflow-hidden shadow-lg ring-1 ring-white/10 group-hover:ring-primary-500/50 group-hover:shadow-primary-500/20 transition-all duration-500 group-hover:-translate-y-1">
                   <Image
                     src={material.textureUrl}
                     alt={`Textura de ${material.name} para reforma de estofados - ${material.type}`}

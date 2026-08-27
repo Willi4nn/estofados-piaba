@@ -1,11 +1,10 @@
-import { PROJECTS_DATA } from '@/data/projects';
-import { Material, Project, Service } from '../types';
+import { Material, Service } from '../types';
 
 const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, '') ||
   'https://www.estofadospiaba.site';
 
-const R2_URL =
+export const R2_URL =
   process.env.NEXT_PUBLIC_R2_URL ||
   'https://pub-e7e92268921342d8b8a850537a5cc877.r2.dev';
 
@@ -36,63 +35,38 @@ export const BUSINESS = {
 } as const;
 
 // ==========================================
-// 1. SERVIÇOS (Página Inicial)
+// 1. SERVIÇOS (Página Inicial - Copywriting para Conversão)
 // ==========================================
 export const SERVICES: Service[] = [
   {
     id: '1',
-    title: 'Reforma de Sofá e Poltrona',
+    title: 'Restauração de Sofás e Poltronas',
     description:
-      'Reforma completa de sofá, poltrona, cadeira e puff em Patos de Minas. Trocamos tecido, espuma e recuperamos a estrutura do seu móvel.',
+      'Transforme seu estofado antigo em uma verdadeira peça de luxo. Reforçamos a estrutura, renovamos as espumas e aplicamos um acabamento impecável para devolver o conforto e a elegância à sua sala.',
     iconName: 'Sofa',
   },
   {
     id: '2',
-    title: 'Cabeceira Sob Medida',
+    title: 'Cabeceiras Sob Medida',
     description:
-      'Cabeceiras personalizadas para cama box, casal, queen e king size. Criamos o design perfeito para o seu quarto com acabamento profissional.',
+      'O toque de sofisticação que o seu quarto pede. Projetamos cabeceiras exclusivas com design personalizado, entregando um acabamento digno de hotel cinco estrelas para o seu refúgio de descanso.',
     iconName: 'Scissors',
   },
   {
     id: '3',
     title: 'Almofadas Decorativas',
     description:
-      'Confeccionamos almofadas decorativas sob medida. Escolha o tamanho, formato e tecido ideal para trazer ainda mais conforto e estilo para o seu ambiente.',
+      'Pequenos detalhes, um impacto visual gigante. Confeccionamos almofadas personalizadas com costura de alta precisão e tecidos nobres, trazendo harmonia, cor e um aconchego extra ao seu ambiente.',
     iconName: 'Palette',
   },
   {
     id: '4',
-    title: 'Estofamentos Premium',
+    title: 'Nosso Padrão de Qualidade',
     description:
-      'Trabalhamos com os melhores tecidos: Linho Misto, Camurça Michigan, Veludo Londres / Ônix, Sarja Peletizada, Bouclé, Couro Ecológico, Pet Friendly e Acqua Block.',
+      'A nossa assinatura é a excelência. Unimos a técnica artesanal aos melhores materiais do mercado: linhos, tecidos impermeáveis e pet friendly garantindo que todo serviço tenha máxima durabilidade e beleza.',
     iconName: 'Sparkles',
   },
 ];
-
-// ==========================================
-// 2. PORTFÓLIO
-// ==========================================
-const CACHE_KEY = 'v=20260326';
-
-export const PORTFOLIO: Project[] = Object.entries(PROJECTS_DATA).flatMap(
-  ([category, projects]) =>
-    projects.map((project, index) => {
-      const images = project.images.filter((img) => !!img);
-      const baseName = category.slice(0, -1);
-      const title = project.title || `${baseName} #${index + 1}`;
-
-      return {
-        id: `${category.toLowerCase()}-${index}`,
-        title,
-        category,
-        // Adicionando a CACHE_KEY ao final das URLs
-        imageUrl: `${R2_URL}${images[0] || ''}?${CACHE_KEY}`,
-        allImages: images.map((img) => `${R2_URL}${img}?${CACHE_KEY}`),
-        date: project.date,
-        description: project.description,
-      };
-    })
-);
 
 // ==========================================
 // 3. MATERIAIS

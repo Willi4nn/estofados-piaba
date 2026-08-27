@@ -150,10 +150,14 @@ export function Contact() {
         href={`https://wa.me/${WHATSAPP_NUMBER}`}
         target="_blank"
         rel="noopener noreferrer"
-        aria-label="Fale connosco pelo WhatsApp"
-        className="fixed bottom-6 right-6 z-40 bg-[#25D366] text-white p-4 rounded-full shadow-lg shadow-[#25D366]/30 hover:bg-[#20bd5a] transition-all duration-300 hover:scale-110 flex items-center group overflow-hidden"
+        aria-label="Fale conosco pelo WhatsApp para um orçamento rápido"
+        className="fixed bottom-6 right-6 z-40 bg-whatsapp text-white p-4 rounded-full shadow-lg shadow-whatsapp/30 hover:bg-whatsapp-hover transition-all duration-300 hover:scale-110 flex items-center group overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-whatsapp focus-visible:ring-offset-2 focus-visible:ring-offset-background"
       >
-        <FaWhatsapp size={28} className="text-white shrink-0" />
+        <FaWhatsapp
+          size={28}
+          className="text-white shrink-0"
+          aria-hidden="true"
+        />
         <span className="max-w-0 opacity-0 md:group-hover:max-w-xs md:group-hover:opacity-100 md:group-hover:ml-3 transition-all duration-500 ease-in-out whitespace-nowrap font-medium hidden md:inline-block">
           Orçamento Rápido
         </span>

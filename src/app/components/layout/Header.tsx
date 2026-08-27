@@ -2,20 +2,13 @@
 import { Menu, X } from 'lucide-react';
 import Image from 'next/image';
 import { useEffect, useState, type MouseEvent } from 'react';
+import { useScroll } from '../../hooks/useScroll';
 import { cn } from '../../lib/utils';
 import { Button } from '../ui/Button';
 
 export function Header() {
-  const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  const isScrolled = useScroll(20);
 
   useEffect(() => {
     if (isMobileMenuOpen) {
@@ -49,7 +42,7 @@ export function Header() {
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isMobileMenuOpen || isScrolled
-          ? 'bg-surface/95 backdrop-blur-lg shadow-sm border-b border-border-light py-4'
+          ? 'bg-surface/95 backdrop-blur-lg py-6 border-b border-border-light'
           : 'bg-transparent py-6'
       }`}
       style={{
@@ -71,8 +64,7 @@ export function Header() {
                 alt="Logo Estofados Piaba"
                 width={160}
                 height={40}
-                className="h-10" // Removido o w-auto do Tailwind
-                style={{ width: 'auto' }} // Adicionado style width auto para resolver o warning
+                className="h-10 w-auto object-contain"
                 priority
               />
             ) : (
@@ -81,8 +73,7 @@ export function Header() {
                 alt="Logo Estofados Piaba"
                 width={160}
                 height={40}
-                className="h-10" // Removido o w-auto do Tailwind
-                style={{ width: 'auto' }} // Adicionado style width auto para resolver o warning
+                className="h-10 w-auto object-contain"
                 priority
               />
             )}
@@ -103,7 +94,7 @@ export function Header() {
                 href={link.href}
                 onClick={(e) => handleNavClick(e, link.href)}
                 className={cn(
-                  'relative text-[13px] uppercase tracking-[0.1em] font-medium transition-colors duration-300 py-2 group font-sans',
+                  'relative text-[13px] uppercase tracking-widest font-medium transition-colors duration-300 py-2 group font-sans',
                   isScrolled
                     ? 'text-secondary-800 hover:text-primary-600'
                     : 'text-white/80 hover:text-white'
@@ -112,7 +103,7 @@ export function Header() {
                 {link.name}
                 <span
                   className={cn(
-                    'absolute bottom-0 left-0 w-0 h-[2px] rounded-full transition-all duration-500 group-hover:w-full',
+                    'absolute bottom-0 left-0 w-0 h-0.5 transition-all duration-500 group-hover:w-full',
                     isScrolled ? 'bg-primary-500' : 'bg-white'
                   )}
                 />

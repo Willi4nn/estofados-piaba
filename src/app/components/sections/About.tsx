@@ -15,7 +15,7 @@ export function About() {
             transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
             className="lg:w-1/2 relative w-full"
           >
-            <div className="relative z-10 aspect-[4/5] md:aspect-square overflow-hidden rounded-2xl shadow-xl border border-border-light">
+            <div className="relative z-10 aspect-[4/5] md:aspect-square overflow-hidden shadow-xl border border-border-light">
               <motion.img
                 whileHover={{ scale: 1.05 }}
                 transition={{ duration: 1.5, ease: 'easeOut' }}
@@ -23,11 +23,11 @@ export function About() {
                 alt="Oficina de tapeçaria de luxo Estofados Piaba"
                 className="w-full h-full object-cover"
               />
-              <div className="absolute inset-0 border border-black/5 pointer-events-none rounded-2xl" />
+              <div className="absolute inset-0 border border-black/5 pointer-events-none" />
             </div>
             {/* Elemento decorativo agora usa um tom neutro para manter a sofisticação */}
             <div
-              className="absolute -top-6 -left-6 md:-top-10 md:-left-10 w-full h-full border-2 border-border-light rounded-2xl z-0 hidden md:block"
+              className="absolute -top-6 -left-6 md:-top-10 md:-left-10 w-full h-full border-2 border-border-light z-0 hidden md:block"
               aria-hidden="true"
             />
           </motion.div>
