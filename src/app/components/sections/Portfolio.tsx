@@ -55,7 +55,7 @@ export function Portfolio() {
   return (
     <section id="portfolio" className="py-24 md:py-32 bg-background">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <header className="text-center mb-16 md:mb-20">
+        <header className="text-center mb-12 md:mb-20">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -70,13 +70,13 @@ export function Portfolio() {
             </h3>
           </motion.div>
 
-          {/* FILTROS: Scroll horizontal no mobile, centralizado no desktop */}
+          {/* FILTROS: flex-wrap para exibir todos simultaneamente e quebrar linha */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-100px' }}
             transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-            className="relative flex overflow-x-auto justify-start md:justify-center gap-2 pb-4 -mb-4 px-2 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
+            className="relative flex flex-wrap justify-center gap-2 md:gap-3 pb-4"
           >
             {categories.map((cat) => {
               const isActive = activeFilter === cat;
@@ -88,13 +88,12 @@ export function Portfolio() {
                     setVisibleItems(6);
                   }}
                   aria-pressed={isActive}
-                  className={`relative px-6 py-2.5 rounded-full text-sm font-medium tracking-wide whitespace-nowrap transition-colors duration-300 z-10 uppercase ${
+                  className={`relative px-5 py-2.5 rounded-full text-xs md:text-sm font-medium tracking-wide transition-colors duration-300 z-10 uppercase ${
                     isActive
                       ? 'text-white'
                       : 'text-secondary-600 hover:text-primary-600 bg-secondary-50 md:bg-transparent'
                   }`}
                 >
-                  {/* Pílula de fundo animada para o item ativo */}
                   {isActive && (
                     <motion.div
                       layoutId="activeFilterBubble"
@@ -115,7 +114,7 @@ export function Portfolio() {
 
         {/* GRID DE PROJETOS */}
         <motion.div
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 lg:gap-4"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8"
           layout
         >
           <AnimatePresence mode="popLayout">
