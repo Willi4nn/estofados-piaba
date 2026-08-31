@@ -17,6 +17,27 @@ type RawProjectInternal = Omit<RawProject, 'date'> & { date: string };
 const raw: Record<string, RawProjectInternal[]> = {
   Sofas: [
     {
+      images: [
+        '/moveis/sofas/1788200574581-20260626_194355.jpg',
+        '/moveis/sofas/1788200608646-20260626_194437.jpg',
+      ],
+      date: '2026-06-26',
+    },
+    {
+      images: [
+        '/moveis/sofas/1788200470075-20260605_181858.jpg',
+        '/moveis/sofas/1788200488986-20260605_181924.jpg',
+      ],
+      date: '2026-06-05',
+    },
+    {
+      images: [
+        '/moveis/sofas/1788200331808-20260601_165544.jpg',
+        '/moveis/sofas/1788200384220-20260601_165505.jpg',
+      ],
+      date: '2026-06-01',
+    },
+    {
       images: ['/moveis/sofas/20260515_153923.jpg'],
       date: '2026-05-15',
     },
@@ -328,6 +349,13 @@ const raw: Record<string, RawProjectInternal[]> = {
   ],
 
   Cabeceiras: [
+    {
+      images: [
+        '/moveis/cabeceiras/1788200515817-20260608_100939.jpg',
+        '/moveis/cabeceiras/1788200555225-20260608_101047.jpg',
+      ],
+      date: '2026-06-08',
+    },
     {
       images: ['/moveis/cabeceiras/20260426_111252.jpg'],
       date: '2026-04-26',

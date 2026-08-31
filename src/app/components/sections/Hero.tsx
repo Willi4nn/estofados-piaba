@@ -3,29 +3,41 @@
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { ArrowRight, ChevronDown } from 'lucide-react';
 import Image from 'next/image';
+import { useRef } from 'react';
 import { Button } from '../ui/Button';
 
 const MotionImage = motion.create(Image);
 
 export function Hero() {
-  const { scrollY } = useScroll();
-  const y = useTransform(scrollY, (value) => value * 1);
+  const containerRef = useRef<HTMLElement>(null);
+
+  // Rastreia o scroll apenas enquanto a seção Hero estiver visível na tela
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ['start start', 'end start'],
+  });
+
+  // Parallax: Move a imagem para baixo na metade da velocidade do scroll
+  const y = useTransform(scrollYProgress, [0, 1], ['0%', '50%']);
+  // Escurece a imagem conforme o usuário desce a página
+  const opacity = useTransform(scrollYProgress, [0, 0.8], [1, 0.3]);
 
   return (
     <section
+      ref={containerRef}
       id="hero"
-      className="relative min-h-[100svh] flex items-center justify-center overflow-hidden bg-secondary-950"
+      className="relative min-h-svh flex items-center justify-center overflow-hidden bg-secondary-950"
       aria-label="Apresentação — Estofados Piaba"
     >
       {/* WRAPPER FIXO/PARALLAX */}
       <motion.div
-        style={{ y }}
-        className="absolute inset-0 z-0 w-full h-full origin-top will-change-transform"
+        style={{ y, opacity }}
+        className="absolute inset-0 z-0 w-full h-full"
       >
         <MotionImage
-          initial={{ scale: 1.1 }}
-          animate={{ scale: 1 }}
-          transition={{ duration: 20, ease: 'easeOut' }}
+          // Efeito Ken Burns: Zoom in infinito, de vai e vem, extremamente sutil
+          animate={{ scale: [1, 1.05, 1] }}
+          transition={{ duration: 20, repeat: Infinity, ease: 'easeInOut' }}
           src="https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?q=80&w=2070&auto=format&fit=crop"
           alt="Sofá elegante reformado pela Estofados Piaba em Patos de Minas"
           fill
@@ -33,8 +45,10 @@ export function Hero() {
           sizes="100vw"
           className="object-cover"
         />
-        {/* OVERLAY SUAVE: Protege o menu no topo (60%), fica quase transparente no meio (30%) e protege o rodapé (50%) */}
-        <div className="absolute inset-0 bg-linear-to-b from-secondary-950/60 via-secondary-950/30 to-secondary-950/50" />
+
+        {/* OVERLAY SUAVE: Mantido o seu gradiente, mas com um fundo base para garantir o contraste */}
+        <div className="absolute inset-0 bg-secondary-950/20" />
+        <div className="absolute inset-0 bg-linear-to-b from-secondary-950/70 via-transparent to-secondary-950/80" />
       </motion.div>
 
       {/* CONTEÚDO */}
